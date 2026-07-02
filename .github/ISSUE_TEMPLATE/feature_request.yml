@@ -1,0 +1,48 @@
+name: Feature or diagnostic request
+description: Suggest a KeySurgeon check, workflow, package, or repair-guide improvement.
+title: "[idea]: "
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - diagnostic check
+        - repair guidance
+        - Textual app
+        - Rich terminal output
+        - packaging or install
+        - documentation or landing page
+        - keyboard model data
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Describe the keyboard failure, workflow friction, or missing explanation.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: What should KeySurgeon do or explain?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence or examples
+      description: Link similar tools, paste non-private KeySurgeon output, or describe the keyboard model involved.
+    validations:
+      required: false
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This request does not require KeySurgeon to store typed private text.
+        - label: This request is about keyboard diagnostics or repair guidance, not general key remapping.

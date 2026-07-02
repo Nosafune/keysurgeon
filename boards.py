@@ -18,12 +18,13 @@ import json
 import os
 import re
 
+import storage
+
 user32 = ctypes.windll.user32
 kernel32 = ctypes.windll.kernel32
 hid = ctypes.windll.hid
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-BOARDTYPES = os.path.join(HERE, "keysurgeon_boards.json")
+BOARDTYPES = storage.path("keysurgeon_boards.json")
 
 RIM_TYPEKEYBOARD = 1
 RIDI_DEVICENAME = 0x20000007

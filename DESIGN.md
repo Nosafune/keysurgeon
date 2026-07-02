@@ -12,7 +12,9 @@ chatter (needs a physical keyboard session). This doc is the living contract.
 Home: `C:\AIDIR\TOOLS\keysurgeon`
 Builds on: [`keytest`](../keytest/keytest.py) (trial engine) and
 [`chatterguard`](../chatterguard/chatterguard.py) (live debounce filter).
-Stack: Python 3, **stdlib only**, Windows-only (ctypes `WH_KEYBOARD_LL`).
+Stack: Python 3, Windows-only (ctypes `WH_KEYBOARD_LL`). Rich powers the
+default terminal UI, Textual powers optional `keysurgeon app`, and the
+diagnostic core keeps a plain/no-color fallback for automation.
 
 ---
 
@@ -344,7 +346,7 @@ keysurgeon/
   faults.py            # taxonomy table (§2) — data
   fixes.py             # recommendation ladders (§6) — data
   scoring.py           # health math + board roll-up (§5)
-  profile.py           # load/save/trend keysurgeon_profile.json, per-device
+  ks_profile.py        # load/save/trend keysurgeon_profile.json, per-device
   ui.py                # ANSI render: keyboard map, cards, report, --plain path
   wizard.py            # guided triage flow (§4)
 ```
@@ -368,7 +370,7 @@ to a manual "which keyboard is this?" prompt if raw-input device id is fiddly.)
 | **M2** | `faults.py` classify+score, `fixes.py` board-aware ladders | ✅ done |
 | **M3** | triage wizard + per-key cards (in `keysurgeon.py`/`ui.py`) | ✅ done |
 | **M4** | live keyboard heatmap + full sweep + report | ✅ done |
-| **M5** | `profile.py` persistence + trend | ✅ done |
+| **M5** | `ks_profile.py` persistence + trend | ✅ done |
 | **M6** | `watch` live chatter monitor (foreground **+ detached background**) | ✅ done |
 | **+** | `boards.py` USB auto-detect + vendor knowledge base | ✅ done (bonus) |
 | **M7** | launcher + README + registry + CLAUDE.md | 🔜 launcher+README done |

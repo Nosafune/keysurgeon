@@ -30,8 +30,7 @@ _AIR = (None, "Blow it out",
         "dead, and sticky faults. Free, 1 minute, always worth trying first.")
 _FILTER = (None, "Software filter",
            "A debounce filter blocks the bounce in software right now - free, "
-           "instant. Good stopgap while you sort the hardware. (chatterguard "
-           "does exactly this.)")
+           "instant. Good stopgap while you sort the hardware.")
 _CLEAN = ({LAPTOP, MEMBRANE, SOLDERED, HOTSWAP, UNKNOWN}, "Clean the contact",
           "Pop the keycap and clean the contact/stem with isopropyl alcohol. "
           "Free, ~5 min. Fixes a lot of dirty-contact misses.")

@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "keysurgeon"
+version = "0.2.0"
+description = "Keyboard chatter diagnostic for Windows, double-typing, dead keys, and repair-first faults"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Nosafune" }]
+keywords = [
+    "keyboard",
+    "keyboard-tester",
+    "keyboard-diagnostics",
+    "keyboard-chatter",
+    "keyboard-repair",
+    "double-typing",
+    "dead-keys",
+    "debounce",
+    "mechanical-keyboard",
+    "usb-hid",
+    "hardware-diagnostics",
+    "windows",
+    "cli",
+    "terminal",
+    "rich",
+    "textual",
+    "repair",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Environment :: Win32 (MS Windows)",
+    "Intended Audience :: End Users/Desktop",
+    "Natural Language :: English",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: System :: Hardware",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "rich>=13.7",
+    "textual>=0.85",
+]
+
+[project.scripts]
+keysurgeon = "keysurgeon:main"
+
+[project.urls]
+Homepage = "https://github.com/nosafune/keysurgeon"
+Repository = "https://github.com/nosafune/keysurgeon"
+Issues = "https://github.com/nosafune/keysurgeon/issues"
+Changelog = "https://github.com/nosafune/keysurgeon/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+py-modules = [
+    "keysurgeon",
+    "app_textual",
+    "brand",
+    "boards",
+    "faults",
+    "fixes",
+    "hook",
+    "issue_packet",
+    "doctor",
+    "export_report",
+    "ks_profile",
+    "manual_smoke",
+    "proof_report",
+    "selftest",
+    "rich_ui",
+    "storage",
+    "trials",
+    "ui",
+    "watch",
+]

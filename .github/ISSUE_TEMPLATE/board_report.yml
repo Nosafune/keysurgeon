@@ -1,0 +1,38 @@
+name: Board report
+description: Help improve keyboard detection and repair guidance for your model.
+title: "[board]: "
+labels: ["board-data"]
+body:
+  - type: input
+    id: model
+    attributes:
+      label: Keyboard brand and model
+      placeholder: "Example: Razer BlackWidow V4"
+    validations:
+      required: true
+  - type: dropdown
+    id: board_type
+    attributes:
+      label: Board type
+      options:
+        - external mechanical hot-swap
+        - external mechanical soldered
+        - external membrane
+        - laptop
+        - unknown
+    validations:
+      required: true
+  - type: textarea
+    id: detection
+    attributes:
+      label: What did KeySurgeon detect?
+      description: Prefer `keysurgeon proof --json`, then `keysurgeon export --json` if saved key evidence matters. Paste only redacted model/vendor/device summary lines. Do not paste typed private text.
+    validations:
+      required: false
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Anything wrong about the guessed board type or repair ladder?
+    validations:
+      required: false

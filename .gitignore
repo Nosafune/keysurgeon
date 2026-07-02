@@ -1,5 +1,19 @@
-﻿__pycache__/
-*.pyc
-*.pyo
+# runtime artifacts - not source
 keysurgeon_profile.json
 keysurgeon_boards.json
+keysurgeon_watch.json
+keysurgeon_watch.pid
+keysurgeon_watch.stop
+*.tmp
+__pycache__/
+*.pyc
+*.pyo
+dist/
+build/
+*.egg-info/
+keysurgeon.spec
+.venv/
+venv/
+*.log
+.runtime/
+artifacts/

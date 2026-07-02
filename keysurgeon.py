@@ -7,31 +7,84 @@ Run with no args for a menu (you don't need to remember verbs):
 
 Or jump straight to a mode:
     python keysurgeon.py triage          # "what's wrong?" wizard
+    python keysurgeon.py tour            # first-run command-center preview
     python keysurgeon.py sweep           # whole board + live heatmap
     python keysurgeon.py watch           # background-style live chatter watch
     python keysurgeon.py test E R T      # test specific keys now
     python keysurgeon.py report          # last results + board health
+    python keysurgeon.py issue           # redacted GitHub issue packet
+    python keysurgeon.py export          # redacted issue/repair report
+    python keysurgeon.py ready           # concise launch readiness board
+    python keysurgeon.py proof           # full local proof/readiness report
+    python keysurgeon.py site           # local landing/demo page
+    python keysurgeon.py smoke          # manual hardware-smoke report scaffold
     python keysurgeon.py fix E           # fix ladder for one key
+    python keysurgeon.py doctor          # support/environment check
 
 Flags (any mode): --plain / --ai (no color, structured), --no-color,
     --keyboard <name>, --presses <n>
 
-Windows only, stdlib only. See DESIGN.md for the full plan.
+Windows only. Rich powers the default terminal UI; Textual provides optional
+app mode when installed. See README.md for public usage.
 """
 
+import shutil
 import sys
 import time
+import webbrowser
+from pathlib import Path
 
+import brand
 import boards
 import faults
 import fixes
-import profile
+import ks_profile as profile
+import storage
 import trials
 import ui
 import watch
 from hook import KeyboardHook, to_vk, vk_name
 
+VERSION = brand.VERSION
 EROW = list("QWERTYUIOP")
+
+HELP_TEXT = f"""{brand.NAME} {VERSION}
+
+{brand.TAGLINE}
+
+Usage:
+  keysurgeon                         menu
+  keysurgeon app                     optional Textual command center
+  keysurgeon tour                    first-run command-center preview
+  keysurgeon triage                  guided problem finder
+  keysurgeon sweep                   full-board diagnostic
+  keysurgeon watch [--bg|--status|--stop]
+  keysurgeon test E R T              test specific keys
+  keysurgeon report                  last results and trend
+  keysurgeon issue [--out FILE]      redacted GitHub issue packet
+  keysurgeon export [--json] [--out FILE]
+                                    redacted report for GitHub issues
+  keysurgeon ready                       concise launch readiness board
+  keysurgeon proof [--json]             full local proof/readiness report
+  keysurgeon site [--open]              local landing/demo page path
+  keysurgeon smoke [--out FILE]         manual hardware-smoke report scaffold
+  keysurgeon smoke --check FILE         validate filled smoke evidence report
+  keysurgeon fix E                   repair ladder for one key
+  keysurgeon board                   set keyboard type
+  keysurgeon doctor                  support/environment check
+  keysurgeon selftest                logic checks, no keyboard needed
+
+Options:
+  --plain, --ai                      plain output
+  --no-color                         disable color
+  --keyboard NAME                    separate profile name
+  --presses N                        presses per trial, default 20
+  --version                          print version
+  -h, --help                         show this help
+
+Runtime data:
+  Per-user local JSON only. Override location with KEYSURGEON_HOME.
+"""
 
 
 # ---------- shared helpers ----------
@@ -108,7 +161,7 @@ def _ask_board_type(default="unknown", force=False):
         print("    " + ui.c(str(i), "ACC") + "  " + desc + mark)
     hint = " (enter = detected) " if guess else " (enter = not sure) "
     raw = input("\n  " + ui.c("pick a number", "ACC")
-                + ui.c(hint + "› ", "DIM")).strip()
+                + ui.c(hint + "> ", "DIM")).strip()
     if not raw:
         chosen = guess or default
     elif raw.isdigit() and 1 <= int(raw) <= len(fixes.BOARD_CHOICES):
@@ -128,7 +181,7 @@ def mode_board(keyboard):
 
 
 def g_dot():
-    return ui.g("●", "*")
+    return ui.g("+", "*")
 
 
 def _show_verdict(verdict, board_type):
@@ -172,7 +225,7 @@ def mode_triage(expected, keyboard):
     print("  " + ui.c("What's bugging you?", "BLD") + "\n")
     for i, (text, _) in enumerate(options, 1):
         print("    " + ui.c(str(i), "ACC") + "  " + text)
-    raw = input("\n  " + ui.c("pick a number", "ACC") + ui.c(" › ", "DIM")).strip()
+    raw = input("\n  " + ui.c("pick a number", "ACC") + ui.c(" > ", "DIM")).strip()
     if not raw.isdigit() or not (1 <= int(raw) <= len(options)):
         print("  " + ui.c("ok, never mind", "DIM"))
         return
@@ -188,7 +241,7 @@ def mode_triage(expected, keyboard):
         print("  " + ui.c("For now, let's test the key directly.", "DIM"))
 
     keystr = input("\n  " + ui.c("Which key(s)? ", "ACC")
-                   + ui.c("(e.g. E or  E W I) › ", "DIM")).strip()
+                   + ui.c("(e.g. E or  E W I) > ", "DIM")).strip()
     keys = keystr.split() if keystr else []
     if not keys:
         print("  " + ui.c("no keys given", "DIM"))
@@ -199,7 +252,7 @@ def mode_triage(expected, keyboard):
 
 def mode_fix(key, keyboard):
     if not key:
-        key = input("  " + ui.c("Which key? ", "ACC") + ui.c("› ", "DIM")).strip()
+        key = input("  " + ui.c("Which key? ", "ACC") + ui.c("> ", "DIM")).strip()
     if not key:
         return
     label = key.upper()
@@ -213,7 +266,7 @@ def mode_fix(key, keyboard):
     print("  " + ui.c(f"What's {label} doing?", "BLD") + "\n")
     for i, (text, _) in enumerate(faultlist, 1):
         print("    " + ui.c(str(i), "ACC") + "  " + text)
-    raw = input("\n  " + ui.c("pick a number", "ACC") + ui.c(" › ", "DIM")).strip()
+    raw = input("\n  " + ui.c("pick a number", "ACC") + ui.c(" > ", "DIM")).strip()
     if not raw.isdigit() or not (1 <= int(raw) <= len(faultlist)):
         return
     fault = faultlist[int(raw) - 1][1]
@@ -237,6 +290,42 @@ def mode_fix(key, keyboard):
 def mode_report(keyboard):
     snap, board_type = profile.latest(keyboard)
     ui.report(snap, board_type or "unknown")
+
+
+def mode_tour():
+    import proof_report
+    ui.tour(proof_report.build_payload())
+    return 0
+
+
+def mode_ready():
+    import proof_report
+    proof_report.print_ready(proof_report.build_payload())
+    return 0
+
+
+def mode_export(keyboard, args=None):
+    args = args or []
+    fmt = "md"
+    out = None
+    i = 0
+    while i < len(args):
+        if args[i] == "--json":
+            fmt = "json"
+        elif args[i] == "--md":
+            fmt = "md"
+        elif args[i] == "--out" and i + 1 < len(args):
+            out = args[i + 1]
+            i += 1
+        i += 1
+    import export_report
+    text = export_report.render(keyboard, fmt)
+    if out:
+        with open(out, "w", encoding="utf-8") as f:
+            f.write(text)
+        print("  " + ui.c(f"export written: {out}", "OK"))
+    else:
+        print(text)
 
 
 def mode_sweep(expected, keyboard):
@@ -343,8 +432,31 @@ def _watch_status():
     print()
 
 
+def mode_site(args=None):
+    args = args or []
+    root = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
+    path = root / "site" / "index.html"
+    if not path.exists():
+        print("  " + ui.c("local landing page is missing", "BAD"))
+        print("  " + ui.c(str(path), "DIM"))
+        return 1
+    if getattr(sys, "frozen", False):
+        target = Path(storage.path("landing-site"))
+        if target.exists():
+            shutil.rmtree(target)
+        shutil.copytree(root / "site", target)
+        path = target / "index.html"
+    print("  " + ui.c("local landing page:", "BLD", "ACC"))
+    print("  " + ui.c(str(path), "DIM"))
+    print("  " + ui.c("public URL is not claimed until GitHub Pages passes.", "WRN"))
+    if "--open" in args:
+        webbrowser.open(path.as_uri())
+        print("  " + ui.c("opened in your default browser", "OK"))
+    return 0
+
+
 def g_flag():
-    return ui.g("⚠", "!")
+    return ui.g("!", "!")
 
 
 # ---------- entry ----------
@@ -382,25 +494,64 @@ def _parse_flags(argv):
 def _dispatch(mode, args, opts):
     kb = opts["keyboard"]
     n = opts["presses"]
-    if mode == "triage":
+    if mode in ("help", "-h", "--help"):
+        print(HELP_TEXT)
+        return 0
+    elif mode in ("version", "--version"):
+        print(VERSION)
+        return 0
+    elif mode == "app":
+        import app_textual
+        raise SystemExit(app_textual.run_app(kb))
+    elif mode == "tour":
+        return mode_tour()
+    elif mode == "ready":
+        return mode_ready()
+    elif mode == "triage":
         mode_triage(n, kb)
+        return 0
     elif mode == "sweep":
         mode_sweep(n, kb)
+        return 0
     elif mode == "watch":
         mode_watch(kb, args)
+        return 0
     elif mode == "test":
         mode_test(args, n, kb, _ask_board_type() if args else "unknown")
+        return 0
     elif mode == "report":
         mode_report(kb)
+        return 0
+    elif mode == "issue":
+        import issue_packet
+        return issue_packet.run(args, kb)
+    elif mode == "export":
+        mode_export(kb, args)
+        return 0
+    elif mode == "proof":
+        import proof_report
+        return proof_report.run(args) or 0
+    elif mode in ("site", "demo"):
+        return mode_site(args)
+    elif mode == "smoke":
+        import manual_smoke
+        return manual_smoke.run(args)
     elif mode == "fix":
         mode_fix(args[0] if args else None, kb)
+        return 0
     elif mode == "board":
         mode_board(kb)
+        return 0
+    elif mode == "doctor":
+        import doctor
+        doctor.run()
+        return 0
     elif mode == "selftest":  # maintenance: validate the logic, no keyboard needed
         import selftest
-        selftest.run()
+        return selftest.run()
     else:
         print("  " + ui.c(f"unknown mode '{mode}'", "BAD"))
+        return 1
 
 
 def main():
@@ -408,8 +559,7 @@ def main():
     ui.init(opts["color"], opts["glyphs"])
 
     if rest:  # a verb was given - jump straight to it
-        _dispatch(rest[0].lower(), rest[1:], opts)
-        return
+        return _dispatch(rest[0].lower(), rest[1:], opts)
 
     # no args -> menu loop
     valid = {num: mode for num, mode, *_ in ui.MENU_ITEMS}
@@ -417,10 +567,10 @@ def main():
         choice = ui.menu().strip().lower()
         if choice in ("q", "quit", "exit"):
             print()
-            return
+            return 0
         mode = valid.get(choice)
         if not mode:
-            print("  " + ui.c("pick 1-6 or q", "DIM"))
+            print("  " + ui.c("pick a listed number or q", "DIM"))
             continue
         _dispatch(mode, [], opts)
         input("\n  " + ui.c("press Enter for the menu", "DIM"))
@@ -428,6 +578,7 @@ def main():
 
 if __name__ == "__main__":
     try:
-        main()
+        raise SystemExit(main())
     except KeyboardInterrupt:
         print("\n  bye")
+        raise SystemExit(130)

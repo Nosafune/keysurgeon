@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "tool": "KeySurgeon",
+  "purpose": "Public asset provenance for workflow, Rich, Textual, terminal-demo screenshot, landing screenshot, and social proof surfaces.",
+  "privacy": "Seeded sample state only; no typed private text is stored or exported.",
+  "assets": [
+    {
+      "path": "site/assets/keysurgeon-demo.svg",
+      "bytes": 22603,
+      "sha256": "f515c098a40256b53ecde56db69de758633a7709b4e3e5471fe21adc01103bea",
+      "kind": "rich-terminal-demo",
+      "generator": "scripts/render-demo-svg.py",
+      "source_modules": [
+        "rich_ui.py",
+        "faults.py",
+        "fixes.py",
+        "brand.py"
+      ],
+      "evidence": [
+        "render-demo-svg.py calls rich_ui.card",
+        "diagnosis evidence is seeded sample output",
+        "repair ladder comes from fixes.ladder_for",
+        "export_svg uses KeySurgeon's Windows-style demo frame, not Rich's default macOS-style terminal chrome"
+      ]
+    },
+    {
+      "path": "site/assets/keysurgeon-demo.png",
+      "bytes": 102732,
+      "sha256": "44bfceaa7f58ca21b558a2527b93b8d1b9b318e412f4a3bdb9683e921468b8b2",
+      "kind": "rich-terminal-demo-screenshot",
+      "generator": "scripts/export-terminal-screenshots.ps1",
+      "source_modules": [
+        "site/assets/keysurgeon-demo.svg",
+        "scripts/render-demo-svg.py"
+      ],
+      "evidence": [
+        "export-terminal-screenshots.ps1 rasterizes the current Rich demo SVG through a headless browser",
+        "the PNG is a public bitmap capture of the verified Rich demo surface with Windows-style framing, not a live interactive terminal screenshot"
+      ]
+    },
+    {
+      "path": "site/assets/keysurgeon-app.svg",
+      "bytes": 77126,
+      "sha256": "ccd5b2851a26b3bfce1324ee461e9acec3ce7c95e67f728539dcb93215ac8b8e",
+      "kind": "textual-command-center-demo",
+      "generator": "scripts/render-app-svg.py",
+      "source_modules": [
+        "app_textual.py",
+        "faults.py",
+        "brand.py"
+      ],
+      "evidence": [
+        "render-app-svg.py calls app_textual hero, signal rail, command center, device, readiness, repair ladder, action bar, issue packet, CLI flow, and health map builders",
+        "watcher state is seeded sample output",
+        "selftest verifies app text avoids fake metrics and fake readiness",
+        "verify-textual-app.py mounts the real Textual app headlessly and presses proof, issue, and watch bindings",
+        "export_svg uses KeySurgeon's Windows-style demo frame, not Rich's default macOS-style terminal chrome"
+      ]
+    },
+    {
+      "path": "site/assets/keysurgeon-app.png",
+      "bytes": 323987,
+      "sha256": "373ebfcf63ae4cc68abcd8c5ad1c363cd9d651fb80e525e70018d4efab2b8f4a",
+      "kind": "textual-command-center-demo-screenshot",
+      "generator": "scripts/export-terminal-screenshots.ps1",
+      "source_modules": [
+        "site/assets/keysurgeon-app.svg",
+        "scripts/render-app-svg.py",
+        "app_textual.py"
+      ],
+      "evidence": [
+        "export-terminal-screenshots.ps1 rasterizes the current Textual command-center demo SVG through a headless browser",
+        "verify-textual-app.py separately mounts the real Textual app headlessly and checks core actions",
+        "the PNG is a public bitmap capture of the verified app demo surface with Windows-style framing, not a live interactive terminal screenshot"
+      ]
+    },
+    {
+      "path": "site/assets/keysurgeon-flow.svg",
+      "bytes": 6892,
+      "sha256": "15c2036d1e252f4713825e8feda8ca30555146c09462ef51df9347a62be730c0",
+      "kind": "workflow-motion-demo",
+      "generator": "scripts/render-flow-svg.py",
+      "source_modules": [
+        "scripts/render-flow-svg.py"
+      ],
+      "evidence": [
+        "render-flow-svg.py writes the README workflow demo from command/evidence frames",
+        "the demo shows watch, test, fix, and proof commands",
+        "seeded copy avoids private typed text and remote claims"
+      ]
+    },
+    {
+      "path": "site/assets/keysurgeon-social.png",
+      "bytes": 47694,
+      "sha256": "aa76ee4d67d4003409779974721424f17f50a4f69601d4286fcca02e4e6015bd",
+      "kind": "social-preview",
+      "generator": "scripts/export-social-preview.ps1",
+      "source_modules": [
+        "site/assets/keysurgeon-social.svg"
+      ],
+      "evidence": [
+        "export-social-preview.ps1 renders the SVG through a headless browser",
+        "PNG is intended for GitHub social preview upload"
+      ]
+    },
+    {
+      "path": "site/assets/keysurgeon-landing-desktop.png",
+      "bytes": 474050,
+      "sha256": "c7dc7c28c1a508b8834a4a114322b70cfe984ae2b04bb4d390864ab1c82901ae",
+      "kind": "landing-page-desktop-screenshot",
+      "generator": "scripts/export-landing-screenshots.ps1",
+      "source_modules": [
+        "site/index.html",
+        "site/assets/keysurgeon.css"
+      ],
+      "evidence": [
+        "export-landing-screenshots.ps1 renders the local landing page through a headless browser",
+        "desktop capture uses the public site HTML and CSS, not a mockup"
+      ]
+    },
+    {
+      "path": "site/assets/keysurgeon-landing-mobile.png",
+      "bytes": 143383,
+      "sha256": "ffc75d58c2a6bd0c8d302e7dbde18c421d4f594c95cb1c6cd4b59829914d9f20",
+      "kind": "landing-page-mobile-screenshot",
+      "generator": "scripts/export-landing-screenshots.ps1",
+      "source_modules": [
+        "site/index.html",
+        "site/assets/keysurgeon.css"
+      ],
+      "evidence": [
+        "export-landing-screenshots.ps1 renders the local landing page through a headless browser",
+        "mobile capture uses the public site HTML and CSS, not a mockup"
+      ]
+    }
+  ]
+}

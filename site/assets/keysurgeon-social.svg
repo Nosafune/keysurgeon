@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">KeySurgeon social preview</title>
+  <desc id="desc">KeySurgeon brand preview with signal mark and product tagline.</desc>
+  <rect width="1280" height="640" fill="#10141D"/>
+  <rect x="70" y="70" width="1140" height="500" rx="32" fill="#1A202B" stroke="#00D7E6" stroke-width="5"/>
+  <g transform="translate(118 132)">
+    <rect width="180" height="180" rx="28" fill="#10141D" stroke="#00D7E6" stroke-width="8"/>
+    <path d="M36 105h34l16-58 33 116 25-58h32" fill="none" stroke="#FF5A4D" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M42 62h48" stroke="#EDE7DA" stroke-width="9" stroke-linecap="round"/>
+    <path d="M42 142h42" stroke="#41D982" stroke-width="9" stroke-linecap="round"/>
+  </g>
+  <text x="350" y="210" font-family="Segoe UI Variable, Segoe UI, Arial, sans-serif" font-size="86" font-weight="850" fill="#EDE7DA">Key<tspan fill="#00D7E6">Surgeon</tspan></text>
+  <text x="356" y="282" font-family="Cascadia Mono, Consolas, monospace" font-size="31" fill="#F5B83D">catch chatter before you replace the board</text>
+  <text x="356" y="374" font-family="Cascadia Mono, Consolas, monospace" font-size="28" fill="#8C93A3">[K]--||--  forensic signal keyboard diagnostic</text>
+  <text x="356" y="432" font-family="Cascadia Mono, Consolas, monospace" font-size="25" fill="#41D982">Rich CLI + Textual command center + local repair ladders</text>
+</svg>

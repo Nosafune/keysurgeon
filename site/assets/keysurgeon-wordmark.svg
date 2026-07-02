@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 220" role="img" aria-labelledby="title desc">
+  <title id="title">KeySurgeon wordmark</title>
+  <desc id="desc">KeySurgeon wordmark with signal keycap mark.</desc>
+  <rect width="880" height="220" rx="28" fill="#10141D"/>
+  <g transform="translate(42 34)">
+    <rect x="0" y="0" width="152" height="152" rx="26" fill="#1A202B" stroke="#00D7E6" stroke-width="7"/>
+    <path d="M28 86h25l10-34 22 68 16-34h24" fill="none" stroke="#FF5A4D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M35 51h35" stroke="#EDE7DA" stroke-width="8" stroke-linecap="round"/>
+    <path d="M35 116h30" stroke="#41D982" stroke-width="8" stroke-linecap="round"/>
+  </g>
+  <text x="230" y="103" font-family="Segoe UI Variable, Segoe UI, Arial, sans-serif" font-size="68" font-weight="800" fill="#EDE7DA">Key<tspan fill="#00D7E6">Surgeon</tspan></text>
+  <text x="235" y="146" font-family="Cascadia Mono, Consolas, monospace" font-size="22" fill="#F5B83D">catch chatter before you replace the board</text>
+</svg>

@@ -1,0 +1,38 @@
+# Changelog
+
+## 0.2.0 - 2026-06-30
+
+- Add Forensic Signal brand tokens.
+- Add Rich-backed default terminal renderer with `--plain` / `--no-color` fallback.
+- Add optional `keysurgeon app` Textual command center.
+- Update package metadata for Rich and Textual.
+- Add landing assets, product contract, GitHub issue templates, and release docs.
+- Generate the public demo SVG from the actual Rich renderer.
+- Rename the profile persistence module to avoid Python stdlib `profile` collisions after install.
+- Extend CI/release checks to verify installed Rich/Textual imports.
+- Add optional PyInstaller Windows executable build script and artifact workflow.
+- Add `keysurgeon doctor` support/environment check.
+- Add redacted `keysurgeon export` reports for GitHub issues and repair notes.
+- Add one-command local release proof, release-asset packaging, and manual-smoke gate.
+- Add repeatable social-preview PNG export script.
+- Add full public-tree verifier for release files, assets, scrub, and runtime checks.
+- Add synthetic hook replay tests for `trials.chatter_trial` timing stats.
+- Add public roadmap for supported checks, candidate next lanes, and non-claims.
+- Add starter-issue and proof-matrix docs for public intake and release-truth
+  review.
+- Add a no-mutation `launch-readiness.ps1` board that summarizes existing
+  proof and pre-publish audit data for local launch handoff.
+- Add a read-only `post-publish-audit.ps1` gate for GitHub metadata, labels,
+  starter issues, remote workflows, Pages URL, and release asset visibility.
+- Harden the manual smoke result recorder so `hardware-smoke-pass` rejects blank
+  evidence scaffolds, missing keyboard identity, placeholder install sources,
+  and unfilled result tables.
+- Add `keysurgeon smoke --check` so checkout, pip, and executable users can
+  validate a filled smoke report before recording `hardware-smoke-pass`.
+
+## 0.1.0 - 2026-06-30
+
+- Prepare public distribution metadata.
+- Add `--help` and `--version`.
+- Move runtime JSON to a per-user data directory with `KEYSURGEON_HOME` override.
+- Keep self-test available from the package entrypoint.

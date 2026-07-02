@@ -18,16 +18,17 @@ import sys
 import time
 
 import faults
-import profile
+import ks_profile as profile
+import storage
 import trials
 from hook import KeyboardHook, vk_name, VK_ESCAPE
 
 kernel32 = ctypes.windll.kernel32
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PIDFILE = os.path.join(HERE, "keysurgeon_watch.pid")
-STATEFILE = os.path.join(HERE, "keysurgeon_watch.json")
-STOPFILE = os.path.join(HERE, "keysurgeon_watch.stop")
+PIDFILE = storage.path("keysurgeon_watch.pid")
+STATEFILE = storage.path("keysurgeon_watch.json")
+STOPFILE = storage.path("keysurgeon_watch.stop")
 
 STATE_EVERY = 3.0      # seconds between state-file writes + stop-flag checks
 PROFILE_EVERY = 60.0   # seconds between profile saves (background)

@@ -2,16 +2,16 @@
 """Profile persistence for KeySurgeon.
 
 Saves trial results so `report` can show board health and trend over time.
-Stored next to this script as keysurgeon_profile.json. Per-keyboard by name so
-a laptop board and an external board track separately.
+Stored in the user's KeySurgeon data directory. Per-keyboard by name so a
+laptop board and an external board track separately.
 """
 
 import json
-import os
 import time
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-PROFILE = os.path.join(HERE, "keysurgeon_profile.json")
+import storage
+
+PROFILE = storage.path("keysurgeon_profile.json")
 
 
 def _load_raw():

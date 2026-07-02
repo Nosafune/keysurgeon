@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Diagnosis guide
+    url: https://github.com/nosafune/keysurgeon/blob/main/docs/DIAGNOSIS_GUIDE.md
+    about: Read verdicts, scores, and evidence lines before filing a report.
+  - name: Roadmap and non-claims
+    url: https://github.com/nosafune/keysurgeon/blob/main/docs/ROADMAP.md
+    about: Check supported diagnostics, candidate lanes, and out-of-scope requests.
+  - name: Manual keyboard smoke
+    url: https://github.com/nosafune/keysurgeon/blob/main/docs/MANUAL_KEYBOARD_SMOKE.md
+    about: Use this before claiming real hardware behavior is proven.

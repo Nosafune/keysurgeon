@@ -1,0 +1,47 @@
+name: Bug report
+description: Report a KeySurgeon crash, wrong diagnosis, or install problem.
+title: "[bug]: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Include the command you ran and the exact output or error.
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: "Example: Windows 11 24H2"
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: "Run: python --version"
+    validations:
+      required: true
+  - type: textarea
+    id: keyboard
+    attributes:
+      label: Keyboard details
+      description: Brand/model, laptop or external, mechanical/membrane, hot-swap/soldered if known.
+    validations:
+      required: false
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: KeySurgeon diagnostics
+      description: Run `keysurgeon issue --out KEYSURGEON_ISSUE_PACKET.md` and paste the redacted packet. The packet includes `keysurgeon proof --json`; if a saved session needs separate structured data, also run `keysurgeon export --json`.
+    validations:
+      required: false
+  - type: textarea
+    id: privacy
+    attributes:
+      label: Privacy check
+      description: Do not paste typed private text. KeySurgeon reports should only need key labels, timings, verdicts, errors, asset proof, and readiness blockers.
+    validations:
+      required: false

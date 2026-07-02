@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KeySurgeon - Keyboard Chatter Diagnostic</title>
+  <meta name="description" content="Windows terminal diagnostic for keyboard chatter, double-typing, dead keys, and repair-first keyboard troubleshooting.">
+  <meta name="keywords" content="keyboard chatter, keyboard tester, double typing, dead keys, keyboard diagnostics, keyboard repair, mechanical keyboard, debounce, Windows CLI, Rich, Textual">
+  <meta name="theme-color" content="#00D7E6">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KeySurgeon">
+  <meta property="og:title" content="KeySurgeon - Keyboard Chatter Diagnostic">
+  <meta property="og:description" content="Catch keyboard chatter, double-typing, and suspicious key faults before replacing the board.">
+  <meta property="og:image" content="assets/keysurgeon-social.png">
+  <meta property="og:image:alt" content="KeySurgeon Forensic Signal terminal diagnostic preview">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="KeySurgeon - Keyboard Chatter Diagnostic">
+  <meta name="twitter:description" content="Windows terminal diagnostic for keyboard chatter and repair-first keyboard troubleshooting.">
+  <meta name="twitter:image" content="assets/keysurgeon-social.png">
+  <meta name="twitter:image:alt" content="KeySurgeon Forensic Signal terminal diagnostic preview">
+  <link rel="icon" href="assets/keysurgeon-mark.svg" type="image/svg+xml">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "KeySurgeon",
+    "applicationCategory": "DeveloperApplication",
+    "applicationSubCategory": "Keyboard diagnostics",
+    "operatingSystem": "Windows",
+    "softwareVersion": "0.2.0",
+    "description": "Windows terminal diagnostic for keyboard chatter, double-typing, dead keys, and repair-first keyboard troubleshooting.",
+    "keywords": "keyboard chatter, keyboard tester, double typing, dead keys, keyboard diagnostics, keyboard repair, mechanical keyboard, debounce, Windows CLI, Rich, Textual",
+    "image": "assets/keysurgeon-social.png",
+    "screenshot": [
+      "assets/keysurgeon-landing-desktop.png",
+      "assets/keysurgeon-demo.png",
+      "assets/keysurgeon-app.png"
+    ],
+    "license": "https://opensource.org/license/mit",
+    "programmingLanguage": "Python",
+    "runtimePlatform": "Windows",
+    "codeRepository": "https://github.com/nosafune/keysurgeon",
+    "issueTracker": "https://github.com/nosafune/keysurgeon/issues",
+    "downloadUrl": "https://github.com/nosafune/keysurgeon",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Sora:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/keysurgeon.css">
+</head>
+<body>
+  <svg class="icon-sprite" aria-hidden="true" focusable="false">
+    <symbol id="ks-icon-diagnosis" viewBox="0 0 24 24">
+      <path d="M4 13h4l2-6 4 12 2-6h4"></path>
+      <path d="M5 5h14"></path>
+      <path d="M5 19h14"></path>
+    </symbol>
+    <symbol id="ks-icon-signal" viewBox="0 0 24 24">
+      <path d="M4 18h2"></path>
+      <path d="M9 18h2"></path>
+      <path d="M14 18h2"></path>
+      <path d="M19 18h1"></path>
+      <path d="M5 18v-4"></path>
+      <path d="M10 18V8"></path>
+      <path d="M15 18v-7"></path>
+      <path d="M20 18V5"></path>
+    </symbol>
+    <symbol id="ks-icon-investigator" viewBox="0 0 24 24">
+      <circle cx="10" cy="10" r="5"></circle>
+      <path d="m14 14 5 5"></path>
+      <path d="M8 10h4"></path>
+      <path d="M10 8v4"></path>
+    </symbol>
+    <symbol id="ks-icon-repair" viewBox="0 0 24 24">
+      <path d="M14 6 7 13"></path>
+      <path d="m5 15 4 4"></path>
+      <path d="m9 19 9-9"></path>
+      <path d="m15 5 4 4"></path>
+    </symbol>
+    <symbol id="ks-icon-privacy" viewBox="0 0 24 24">
+      <path d="M6 10V8a6 6 0 0 1 12 0v2"></path>
+      <rect x="5" y="10" width="14" height="10" rx="1"></rect>
+      <path d="M12 14v2"></path>
+    </symbol>
+    <symbol id="ks-icon-install" viewBox="0 0 24 24">
+      <path d="M12 4v10"></path>
+      <path d="m8 10 4 4 4-4"></path>
+      <path d="M5 19h14"></path>
+    </symbol>
+  </svg>
+  <main class="app-shell" aria-label="KeySurgeon local landing page">
+    <header class="topbar">
+      <div class="brand-row">
+        <img src="assets/keysurgeon-mark.svg" alt="">
+        <span>[K]--||-- forensic signal</span>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="KeySurgeon sections">
+        <button class="tab is-active" id="tabbtn-diagnosis" role="tab" type="button" data-tab="diagnosis" aria-selected="true" aria-controls="tab-diagnosis" tabindex="0"><svg class="tab-icon" aria-hidden="true" focusable="false"><use href="#ks-icon-diagnosis"></use></svg><span>Diagnosis</span></button>
+        <button class="tab" id="tabbtn-signal" role="tab" type="button" data-tab="signal" aria-selected="false" aria-controls="tab-signal" tabindex="-1"><svg class="tab-icon" aria-hidden="true" focusable="false"><use href="#ks-icon-signal"></use></svg><span>Signal</span></button>
+        <button class="tab" id="tabbtn-investigator" role="tab" type="button" data-tab="investigator" aria-selected="false" aria-controls="tab-investigator" tabindex="-1"><svg class="tab-icon" aria-hidden="true" focusable="false"><use href="#ks-icon-investigator"></use></svg><span>Investigator</span></button>
+        <button class="tab" id="tabbtn-repair" role="tab" type="button" data-tab="repair" aria-selected="false" aria-controls="tab-repair" tabindex="-1"><svg class="tab-icon" aria-hidden="true" focusable="false"><use href="#ks-icon-repair"></use></svg><span>Repair</span></button>
+        <button class="tab" id="tabbtn-privacy" role="tab" type="button" data-tab="privacy" aria-selected="false" aria-controls="tab-privacy" tabindex="-1"><svg class="tab-icon" aria-hidden="true" focusable="false"><use href="#ks-icon-privacy"></use></svg><span>Privacy</span></button>
+        <button class="tab" id="tabbtn-install" role="tab" type="button" data-tab="install" aria-selected="false" aria-controls="tab-install" tabindex="-1"><svg class="tab-icon" aria-hidden="true" focusable="false"><use href="#ks-icon-install"></use></svg><span>Install</span></button>
+      </nav>
+    </header>
+
+    <section class="hero-band">
+      <div>
+        <h1>Your keyboard is not dead yet.</h1>
+        <p class="lede">KeySurgeon catches keyboard chatter, flags missed or suspicious key behavior during tests, and gives you a repair-first ladder before you replace the board.</p>
+      </div>
+      <div class="actions">
+        <a class="button" href="#install" data-tab-link="install"><svg class="button-icon" aria-hidden="true" focusable="false"><use href="#ks-icon-install"></use></svg><span>See install steps</span></a>
+        <a class="button secondary" href="#signal" data-tab-link="signal"><svg class="button-icon" aria-hidden="true" focusable="false"><use href="#ks-icon-signal"></use></svg><span>See the signal</span></a>
+        <a class="button ghost" href="https://github.com/nosafune/keysurgeon"><svg class="button-icon" aria-hidden="true" focusable="false"><use href="#ks-icon-investigator"></use></svg><span>View on GitHub</span></a>
+      </div>
+      <div class="trust" aria-label="KeySurgeon trust signals">
+        <span>Windows</span>
+        <span>MIT</span>
+        <span>local JSON</span>
+        <span>Rich + Textual</span>
+        <span>--plain fallback</span>
+      </div>
+    </section>
+
+    <section class="stage" aria-live="polite">
+      <article class="panel is-active" id="tab-diagnosis" role="tabpanel" aria-labelledby="tabbtn-diagnosis" data-panel="diagnosis">
+        <div class="panel-copy">
+          <p class="kicker">Readable verdict first</p>
+          <h2>Chatter gets a verdict, not a blinking key.</h2>
+          <p>Ordinary testers prove a key registers. KeySurgeon checks timing, names the fault, and tells you what to try next.</p>
+          <a class="text-link" href="docs/KEYBOARD_TESTER_COMPARISON.md">Compare keyboard tester.</a>
+        </div>
+        <div class="terminal" aria-label="KeySurgeon terminal diagnosis example">
+<pre><span class="signal">[K]--||--  KeySurgeon / test E</span>
+
+E [########....] 14/20
+
+<span class="fault">CHATTER DETECTED</span>  E  35/100
+This key is double-typing.
+
+evidence:
+  || re-press 31ms
+  || 18 bounces in 240 presses
+  || confidence: high
+
+<span class="probe">What to do, easiest first:</span>
+  1  software filter
+  2  blow out debris
+  3  clean contact
+  4  hot-swap the switch
+
+<span class="repair">You do not need a new keyboard for this.</span></pre>
+          <p class="terminal-caption">Sample diagnosis copy. Generated workflow, Rich, and Textual proof lives in the Signal tab.</p>
+        </div>
+      </article>
+
+      <article class="panel" id="tab-signal" role="tabpanel" aria-labelledby="tabbtn-signal" data-panel="signal" hidden>
+        <div class="panel-copy compact">
+          <p class="kicker">Rich + Textual proof</p>
+          <h2>The command center shows live signal without fake metrics.</h2>
+          <p>The demo captures come from KeySurgeon's workflow storyboard, Rich renderer, and app signal builders. Run <code>keysurgeon ready</code> for the local launch board, then <code>keysurgeon proof --json</code> for demo hashes and machine-readable blockers.</p>
+        </div>
+        <div class="demo-stack">
+          <figure class="demo-frame workflow-frame">
+            <img src="assets/keysurgeon-flow.svg" alt="KeySurgeon workflow demo showing watch, test, fix, and proof commands">
+          </figure>
+          <figure class="demo-frame">
+            <img src="assets/keysurgeon-demo.png" alt="KeySurgeon terminal diagnosis demo screenshot">
+          </figure>
+          <figure class="demo-frame">
+            <img src="assets/keysurgeon-app.png" alt="KeySurgeon Textual command center signal rail demo screenshot">
+          </figure>
+        </div>
+      </article>
+
+      <article class="panel" id="tab-investigator" role="tabpanel" aria-labelledby="tabbtn-investigator" data-panel="investigator" hidden>
+        <div class="panel-copy">
+          <p class="kicker">Not a keyboard tester</p>
+          <h2>A fault investigator for real switch behavior.</h2>
+          <p>KeySurgeon is built around evidence the tool can honestly collect: chatter, missed presses, suspicious holds, extra events, and saved test results.</p>
+          <p><a class="text-link" href="https://github.com/nosafune/keysurgeon/blob/main/docs/KEYBOARD_TESTER_COMPARISON.md">Compare it to a browser keyboard tester.</a></p>
+        </div>
+        <div class="evidence-grid">
+          <div><b>Chatter</b><span>Finds double-fires that ordinary key-light testers miss.</span></div>
+          <div><b>Watch mode</b><span>Runs while you type normally and catches chatter in the act.</span></div>
+          <div><b>Report</b><span>Rolls the latest evidence into board health and next action.</span></div>
+        </div>
+      </article>
+
+      <article class="panel" id="tab-repair" role="tabpanel" aria-labelledby="tabbtn-repair" data-panel="repair" hidden>
+        <div class="panel-copy">
+          <p class="kicker">Replacement last</p>
+          <h2>The fix path stays honest.</h2>
+          <p>Every ladder starts with cheap, reversible steps. Replacing the board is only shown as the last rung.</p>
+        </div>
+        <div class="ladder" aria-label="KeySurgeon repair ladder">
+          <div class="step"><span>1</span><b>filter</b><em>block bounce now</em></div>
+          <div class="step"><span>2</span><b>air</b><em>clear debris</em></div>
+          <div class="step"><span>3</span><b>clean</b><em>contact and stem</em></div>
+          <div class="step"><span>4</span><b>swap</b><em>hot-swap switch</em></div>
+          <div class="step"><span>5</span><b>solder</b><em>replace switch</em></div>
+          <div class="step final"><span>6</span><b>replace</b><em>last resort</em></div>
+        </div>
+      </article>
+
+      <article class="panel" id="tab-privacy" role="tabpanel" aria-labelledby="tabbtn-privacy" data-panel="privacy" hidden>
+        <div class="panel-copy">
+          <p class="kicker">Local by design</p>
+          <h2>No typed text stored, no telemetry, no mystery upload.</h2>
+          <p>KeySurgeon observes key labels and timing-derived verdicts. Runtime JSON stays under your local user data folder unless you set <code>KEYSURGEON_HOME</code>, and <code>--plain</code> keeps output scriptable.</p>
+        </div>
+        <div class="verdicts" aria-label="KeySurgeon verdict guide">
+          <div><b>HEALTHY</b><span>tested behavior looked normal</span></div>
+          <div><b>WATCH</b><span>suspicious; retest or monitor</span></div>
+          <div><b>DEGRADING</b><span>clean or isolate the switch</span></div>
+          <div><b>FAILING</b><span>repeatable fault; follow the ladder</span></div>
+        </div>
+      </article>
+
+      <article class="panel" id="tab-install" role="tabpanel" aria-labelledby="tabbtn-install" data-panel="install" hidden>
+        <div class="panel-copy">
+          <p class="kicker">Local proof first</p>
+          <h2>Install from the checkout today.</h2>
+          <p>The GitHub URL stays a post-publish path until the repository, CI, Pages, and release gates are approved and published.</p>
+        </div>
+        <div class="terminal install-terminal">
+<pre><span class="signal">python -m pip install .</span>
+keysurgeon selftest
+keysurgeon tour
+keysurgeon ready
+keysurgeon proof --json
+keysurgeon
+keysurgeon app
+
+# later, after publish gates pass:
+python -m pip install "git+https://github.com/nosafune/keysurgeon.git"</pre>
+        </div>
+      </article>
+    </section>
+
+    <footer class="status-line">
+      <span>KeySurgeon 0.2.0</span>
+      <span>Forensic Signal terminal diagnostic</span>
+      <span>Local preview</span>
+    </footer>
+  </main>
+
+  <script>
+    const buttons = [...document.querySelectorAll("[data-tab]")];
+    const panels = [...document.querySelectorAll("[data-panel]")];
+    const links = [...document.querySelectorAll("[data-tab-link]")];
+
+    function activate(tab) {
+      buttons.forEach((button) => {
+        const active = button.dataset.tab === tab;
+        button.classList.toggle("is-active", active);
+        button.setAttribute("aria-selected", String(active));
+        button.setAttribute("tabindex", active ? "0" : "-1");
+      });
+      panels.forEach((panel) => {
+        const active = panel.dataset.panel === tab;
+        panel.hidden = !active;
+        panel.classList.toggle("is-active", active);
+      });
+      if (location.hash !== `#${tab}`) {
+        history.replaceState(null, "", `#${tab}`);
+      }
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => activate(button.dataset.tab));
+      button.addEventListener("keydown", (event) => {
+        if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
+        event.preventDefault();
+        const index = buttons.indexOf(button);
+        let next = null;
+        if (event.key === "Home") {
+          next = buttons[0];
+        } else if (event.key === "End") {
+          next = buttons[buttons.length - 1];
+        } else {
+          const dir = event.key === "ArrowRight" ? 1 : -1;
+          next = buttons[(index + dir + buttons.length) % buttons.length];
+        }
+        next.focus();
+        activate(next.dataset.tab);
+      });
+    });
+
+    links.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        activate(link.dataset.tabLink);
+      });
+    });
+
+    const start = location.hash.replace("#", "");
+    if (panels.some((panel) => panel.dataset.panel === start)) {
+      activate(start);
+    }
+  </script>
+</body>
+</html>
