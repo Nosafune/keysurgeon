@@ -29,7 +29,10 @@ $ignoredFileRegexes = @(
     '(^|/)keysurgeon_boards\.json$',
     '(^|/)keysurgeon_watch\.json$',
     '(^|/)keysurgeon_watch\.pid$',
-    '(^|/)keysurgeon_watch\.stop$'
+    '(^|/)keysurgeon_watch\.stop$',
+    '(^|/)CLAUDE\.md$',
+    '(^|/)AGENTS\.md$',
+    '(^|/)REFERENCE\.md$'
 )
 
 function Convert-ToRelativePath {
