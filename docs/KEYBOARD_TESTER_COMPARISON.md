@@ -35,5 +35,5 @@ hash-verified workflow/Rich/Textual demo assets with browser-rasterized demo
 PNGs. Broad real-hardware claims still require the manual keyboard smoke report
 to record `hardware-smoke-pass`.
 
-Until the public repository, remote workflows, Pages, and release artifact exist,
-GitHub/CI/release proof remains local-only.
+GitHub repository, CI, Pages, and the v0.2.0 release are live. Broad
+real-hardware proof still requires a recorded manual keyboard smoke pass.

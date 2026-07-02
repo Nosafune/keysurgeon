@@ -106,7 +106,15 @@ watch mode, repair ladder, and redacted exports help.
 
 ## Install
 
-Current local install, from this checkout:
+From the public GitHub repository:
+
+```powershell
+python -m pip install "git+https://github.com/nosafune/keysurgeon.git"
+keysurgeon selftest
+keysurgeon
+```
+
+From a local checkout:
 
 ```powershell
 python -m pip install .
@@ -114,23 +122,16 @@ keysurgeon selftest
 keysurgeon
 ```
 
-Future public GitHub install, after the repository is created, pushed, and the
-remote gates pass:
+The public repository, GitHub Pages site, remote selftest workflow, and final
+`v0.2.0` Windows release asset are live. Verify the current public surface with:
 
 ```powershell
-python -m pip install "git+https://github.com/nosafune/keysurgeon.git"
-keysurgeon selftest
+.\scripts\post-publish-audit.ps1
 ```
 
-Do not use the GitHub URL yet unless `keysurgeon proof --json` and
-`.\scripts\pre-publish-audit.ps1` show the repository, remote workflow, Pages,
-and release gates are no longer blocked.
-
-KeySurgeon uses Rich for the default terminal UI and has a Textual command
-center available with `keysurgeon app`. The app can start or stop the real
-background watcher, show device identity, and route the next CLI command from
-saved report or live watch state. Use `--plain` or `--no-color` for automation
-and simple terminals.
+KeySurgeon has a Rich terminal UI and optional Textual command center through
+`keysurgeon app`. Use `--plain` or `--no-color` for automation and simple
+terminals.
 
 ## Why It Stands Out
 
@@ -157,24 +158,25 @@ or diagnostic workflow changes.
 
 ## Current Publish Status
 
-KeySurgeon is public-ready locally, not published. The local proof stack passes
-`selftest`, landing render smoke, public-tree verification, package build, and
-hash checks for the README/social/demo assets. The remaining publish blockers
-are deliberate:
+KeySurgeon is published publicly:
 
-- real keyboard smoke must be recorded as `hardware-smoke-pass`;
-- the v2 release files must be committed before any public push or tag;
-- the GitHub repository and origin remote do not exist yet;
-- remote selftest and Pages workflow runs do not exist yet;
-- no GitHub release asset is published yet.
+- Repo: https://github.com/Nosafune/keysurgeon
+- Pages: https://nosafune.github.io/keysurgeon/
+- Release: https://github.com/Nosafune/keysurgeon/releases/tag/v0.2.0
+- Windows asset: `keysurgeon-v0.2.0-windows-x64.exe`
+- Post-publish audit: `KEYSURGEON_POST_PUBLISH_READY`
 
-Run `.\scripts\launch-readiness.ps1` or
-`.\scripts\launch-readiness.ps1 -AsMarkdown` for a one-page local launch board.
-It summarizes proof and pre-publish audit state without touching git, GitHub, releases, Pages, or deploy state. Run `keysurgeon proof --json` or
-`.\scripts\pre-publish-audit.ps1 -Json` for the current machine-readable state.
-After publish, run `.\scripts\post-publish-audit.ps1 -Json` for read-only proof
-of repository metadata, starter issues, workflow runs, Pages URL, and release
-asset visibility.
+The remaining proof boundary is real hardware behavior: do not claim broad
+real-keyboard proof until `docs/MANUAL_SMOKE_RESULT.md` records
+`hardware-smoke-pass` from the manual keyboard smoke path.
+
+Useful checks:
+
+```powershell
+keysurgeon proof --json
+.\scripts\post-publish-audit.ps1
+.\scripts\launch-readiness.ps1 -AsMarkdown
+```
 
 ## Proof Status
 
