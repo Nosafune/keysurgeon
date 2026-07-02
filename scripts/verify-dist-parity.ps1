@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$DistRoot = ""
 )
 
@@ -30,9 +30,9 @@ $ignoredFileRegexes = @(
     '(^|/)keysurgeon_watch\.json$',
     '(^|/)keysurgeon_watch\.pid$',
     '(^|/)keysurgeon_watch\.stop$',
-    '(^|/)CLAUDE\.md$',
-    '(^|/)AGENTS\.md$',
-    '(^|/)REFERENCE\.md$'
+    '(^|/)[Cc][Ll][Aa][Uu][Dd][Ee]\.md$',
+    '(^|/)[Aa][Gg][Ee][Nn][Tt][Ss]\.md$',
+    '(^|/)[Rr][Ee][Ff][Ee][Rr][Ee][Nn][Cc][Ee]\.md$'
 )
 
 function Convert-ToRelativePath {

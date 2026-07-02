@@ -1,4 +1,4 @@
-# KeySurgeon — Design & Build Plan
+﻿# KeySurgeon — Design & Build Plan
 
 > A smart, guided keyboard diagnostic that finds **fixable** problems before
 > you throw the board away. Diagnose → explain → prescribe a fix ladder that
@@ -373,7 +373,7 @@ to a manual "which keyboard is this?" prompt if raw-input device id is fiddly.)
 | **M5** | `ks_profile.py` persistence + trend | ✅ done |
 | **M6** | `watch` live chatter monitor (foreground **+ detached background**) | ✅ done |
 | **+** | `boards.py` USB auto-detect + vendor knowledge base | ✅ done (bonus) |
-| **M7** | launcher + README + registry + CLAUDE.md | 🔜 launcher+README done |
+| **M7** | launcher + README + registry + maintainer notes | 🔜 launcher+README done |
 | ~~Mx~~ | ~~latency / NKRO / scancode audit~~ | **cut from v1** — see §3b |
 
 Remaining for v1 polish: register in PROJECT_REGISTRY, optional PS alias,

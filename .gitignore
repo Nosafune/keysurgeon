@@ -1,7 +1,7 @@
-# runtime artifacts - not source
-CLAUDE.md
-AGENTS.md
-REFERENCE.md
+﻿# runtime artifacts - not source
+[Cc][Ll][Aa][Uu][Dd][Ee].md
+[Aa][Gg][Ee][Nn][Tt][Ss].md
+[Rr][Ee][Ff][Ee][Rr][Ee][Nn][Cc][Ee].md
 keysurgeon_profile.json
 keysurgeon_boards.json
 keysurgeon_watch.json
