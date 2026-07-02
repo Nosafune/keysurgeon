@@ -20,22 +20,23 @@ remote publish proof.
 [![Local JSON](https://img.shields.io/badge/storage-local_JSON-F5B83D)](#privacy)
 [![No telemetry](https://img.shields.io/badge/telemetry-none-FF5A4D)](#privacy)
 
-**Catch keyboard chatter before you replace the board.**
+**Find keyboard chatter before you replace the board.**
+
+KeySurgeon is a Windows terminal diagnostic for double-typing, dead keys,
+intermittent keys, sticky behavior, and other fixable keyboard faults. It is for
+the moment when a browser keyboard tester says a key works, but the keyboard
+still double-types in real use.
 
 ## What You Get In 30 Seconds
 
-- A terminal verdict for double-typing, dead, intermittent, sticky, or extra
-  key behavior.
-- Timing evidence that explains why a key is failing, not just whether it
-  registers.
-- A cheapest-first repair ladder: software filter, clean, switch swap,
-  desolder, then replacement only when the evidence points there.
+- A terminal verdict for double-typing, dead, intermittent, sticky, or extra key
+  behavior.
+- Timing evidence that shows why a key is failing.
+- A repair ladder that starts with the cheap fixes: software filter, clean,
+  switch swap, desolder, then replacement only when the evidence points there.
 - A Rich default UI, optional Textual command center, and plain output for
   scripts or support logs.
 - A redacted GitHub issue packet that keeps typed private text out of reports.
-
-KeySurgeon is for the moment when a browser keyboard tester says a key works,
-but the keyboard still double-types in real use.
 
 ## First Five Minutes
 
@@ -51,10 +52,10 @@ keysurgeon ready
 keysurgeon proof --json
 ```
 
-Read the first result as a repair decision, not a typing score. `HEALTHY` means
-the tested key behaved normally. `WATCH` means the evidence is suspicious but
-not enough to act on yet. `DEGRADING` means clean or isolate the switch.
-`FAILING` means follow the repair ladder before replacing hardware.
+Read the result as a repair decision, not a typing score. `HEALTHY` means the
+tested key behaved normally. `WATCH` means the evidence is suspicious, but not
+enough to act on yet. `DEGRADING` means clean or isolate the switch. `FAILING`
+means follow the repair ladder before replacing hardware.
 
 If the fault only appears while you type normally, run `keysurgeon watch --bg`,
 use the keyboard, then check `keysurgeon report`. For GitHub support, run
@@ -74,11 +75,6 @@ seeded sample state so the public proof stays stable. Regenerate them with
 `.\scripts\generate-demo-assets.ps1`; the same command writes
 `site/assets/keysurgeon-proof.json` with live hashes and source provenance.
 
-KeySurgeon is a Windows terminal diagnostic for double-typing, dead keys,
-intermittent keys, sticky behavior, and other fixable keyboard faults. It does
-not stop at "your key works." It tells you what is failing and which repair to
-try first.
-
 ```text
 [K]--||--  KeySurgeon / test E
 
@@ -97,8 +93,8 @@ next:
 ## Why Not A Keyboard Tester?
 
 Most keyboard testers light up when a key registers. A chattering switch still
-registers, it just registers twice. KeySurgeon looks at timing and repeated
-events so it can catch the failure ordinary testers miss.
+registers. It registers twice. KeySurgeon looks at timing and repeated events,
+so it can catch the failure ordinary testers miss.
 
 See `docs/KEYBOARD_TESTER_COMPARISON.md` for the focused comparison: where a
 browser keyboard tester is enough, and where KeySurgeon's timing evidence,
@@ -136,13 +132,15 @@ terminals.
 ## Why It Stands Out
 
 - It catches chatter ordinary key-light testers miss.
-- It gives a ranked repair ladder instead of jumping to replacement.
+- It gives a ranked repair ladder before jumping to replacement.
 - `watch` can monitor normal typing for double-fires in the background.
-- Rich/Textual views feel like a real terminal app, while `--plain` stays scriptable.
-- `keysurgeon tour` gives new users the command loop, privacy posture, and proof gates without side effects.
+- Rich/Textual views feel like a real terminal app, while `--plain` stays
+  scriptable.
+- `keysurgeon tour` gives new users the command loop, privacy posture, and proof
+  gates without side effects.
 - The app screen is state-driven: no fake metrics, no fake repair buttons.
 - GitHub intake is split between bug reports, board model reports, and feature
-  requests so useful public traffic turns into actionable diagnostics.
+  requests, so public traffic turns into actionable diagnostics.
 - `keysurgeon issue` writes a single redacted packet with support, proof, and
   export sections for GitHub bug reports.
 - Starter issue templates give maintainers ready public issues for board data,
@@ -153,8 +151,8 @@ terminals.
 
 Small, evidence-backed issues are the best fit for KeySurgeon right now. Start
 with `CONTRIBUTING.md`, `docs/FIRST_ISSUES.md`, and
-`docs/STARTER_ISSUE_TEMPLATES.md` before filing board data, repair metadata,
-or diagnostic workflow changes.
+`docs/STARTER_ISSUE_TEMPLATES.md` before filing board data, repair metadata, or
+diagnostic workflow changes.
 
 ## Current Publish Status
 
@@ -188,10 +186,12 @@ keysurgeon proof --json
 | Demo provenance | `keysurgeon-proof.json` records generator scripts, source modules, sizes, and SHA-256 hashes for screenshots, public demo, social, and workflow assets. | Verifier blocks stale demo proof. |
 | Package metadata | `keysurgeon proof --json` and `verify-public-tree.ps1` check `pyproject.toml` keywords and project URLs. | Local package metadata matches the GitHub topic/search positioning. |
 | Package build gate | `keysurgeon proof --json` points to `scripts/release-check.ps1` as the command-owned wheel/package proof. | Command-gated; no retained build artifact required. |
-| Package/runtime | `local-release-proof.ps1` runs release check, wheel build, export, doctor, site render, executable package smoke, and post-publish visibility audit. | Local only until GitHub repo, workflows, Pages, and final release exist. |
+| Package/runtime | `local-release-proof.ps1` runs release check, wheel build, export, doctor, site render, executable package smoke, and post-publish visibility audit. | Public repo, workflow, Pages site, final release, latest release, and GitHub release asset are live. |
 | Privacy/export | `selftest` verifies redacted Markdown/JSON export and no private prose leakage. | No typed text is stored or exported. |
 | Hardware behavior | Synthetic hook replay proves chatter timing logic. | Real keyboard smoke still required before broad hardware claims. |
-| Git hygiene | `pre-publish-audit.ps1` checks `git status --porcelain -- .`. | Publish stays blocked while release files are uncommitted or untracked. |
+| Git hygiene | `pre-publish-audit.ps1` checks `git status --porcelain -- .`. | Release files committed; post-publish visibility audit is the current public gate. |
+
+See `docs/PROOF_MATRIX.md` for the longer proof matrix.
 
 ## Quick Use
 
@@ -234,13 +234,13 @@ keysurgeon selftest        # logic checks, no keyboard needed
 ## How To Read A Result
 
 Start with the verdict, then the evidence. A low score is not a value judgment
-on the keyboard; it is the current evidence for the tested key.
+on the keyboard. It is the current evidence for the tested key.
 
 | Verdict | Meaning | What to do first |
 |---|---|---|
 | `HEALTHY` | tested behavior looked normal | stop |
 | `WATCH` | suspicious but not proven | retest or run `keysurgeon watch` |
-| `DEGRADING` | enough misses/repeats to act | clean or isolate the switch |
+| `DEGRADING` | enough misses or repeats to act | clean or isolate the switch |
 | `FAILING` | repeatable fault found | follow the repair ladder |
 
 More detail: `docs/DIAGNOSIS_GUIDE.md`.
@@ -322,9 +322,11 @@ Live hook behavior still needs a real keyboard smoke test before broad
 promotion. Run `keysurgeon smoke` to write a safe report scaffold from a
 checkout, pip install, or executable artifact, then run
 `keysurgeon smoke --check docs\MANUAL_SMOKE_REPORT.md` before recording
-`hardware-smoke-pass`. A PyInstaller `.exe` build script and GitHub artifact workflow are
-included, but no installer, Winget package, PyPI release, or GitHub release
-asset has been published yet.
+`hardware-smoke-pass`.
+
+A PyInstaller `.exe` build script, GitHub executable workflow, and final
+`v0.2.0` Windows release asset are included. There is no installer, Winget
+package, or PyPI release yet.
 
 ## License
 
