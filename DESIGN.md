@@ -6,12 +6,11 @@
 > ends at "replace the board" when nothing cheaper will work.
 
 Status: **v0.1 BUILT (2026-06-14).** M0–M6 shipped + device auto-detect; passed
-a 37-agent adversarial review (19 bugs found & fixed). Untested by hand on real
+a focused adversarial review (19 bugs found and fixed). Untested by hand on real
 chatter (needs a physical keyboard session). This doc is the living contract.
 
-Home: `C:\AIDIR\TOOLS\keysurgeon`
-Builds on: [`keytest`](../keytest/keytest.py) (trial engine) and
-[`chatterguard`](../chatterguard/chatterguard.py) (live debounce filter).
+Home: repository root.
+Builds on the repository's diagnostic trial engine and live debounce/filter code.
 Stack: Python 3, Windows-only (ctypes `WH_KEYBOARD_LL`). Rich powers the
 default terminal UI, Textual powers optional `keysurgeon app`, and the
 diagnostic core keeps a plain/no-color fallback for automation.
@@ -71,7 +70,7 @@ Each fault has: how we **detect** it, whether it's **fixable**, and the **fix ru
 
 | Fault | Symptom | How KeySurgeon detects | Fixable? | Fix rungs |
 |---|---|---|---|---|
-| **Chatter / bounce** | one press → 2+ chars | re-press <35ms after release (keytest CHATTER) | **Yes** | 0 → 4/5 |
+| **Chatter / bounce** | one press → 2+ chars | re-press <35ms after release (chatter threshold) | **Yes** | 0 → 4/5 |
 | **Dead key** | press → nothing | trial never registers (STALLED) | **Often** | 1 → 2 → 4/5 |
 | **Intermittent / flaky** | works 8/10 times | registered < expected, no chatter | **Often** | 1 → 2 → 3 |
 | **Sticky key** | char repeats / slow release | abnormally long holds, EXTRA bounces | **Often** | 1 → 2 (lube/spring) |
@@ -92,7 +91,7 @@ new rows = new data, not new control flow (same philosophy as NULLDIVER's
 
 ## 3. Diagnostic battery
 
-Reusable test primitives. keytest already has the first two; the rest are new.
+Reusable test primitives. The first two already exist; the rest are new.
 
 1. **Chatter trial** *(have)* — N presses/key, flag re-press <35ms. → chatter.
 2. **Registration trial** *(have)* — did all N register? → dead / intermittent.
@@ -220,13 +219,13 @@ Example (E chatters, mechanical hotswap board):
 KEY E — CHATTER (re-press 31ms, switch is bouncing). Confidence: HIGH (240 presses)
 
 This is a failing switch, not your fault. Fix ladder:
-  ✓ 0  Software filter      chatterguard already blocks <45ms bounces — running?
+  ✓ 0  Software filter      debounce filter already blocks <45ms bounces — running?
     1  Blow it out          compressed air under the cap; debris can mimic chatter
     4  Hot-swap the switch  pull cap+switch, drop a new one in (~$0.30, 2 min)
                             your board IS hotswap → this is the real fix
   ✗ 6  Replace keyboard     NOT NEEDED for a single chattering switch
 
-Recommended: run chatterguard now (free, instant), order a switch, hot-swap when it arrives.
+Recommended: enable the software filter now, order a switch, hot-swap when it arrives.
 ```
 
 Board metadata is asked **once** (or remembered per device): *Is this a laptop
@@ -241,7 +240,7 @@ ordered rungs`. Adding boards/faults later = data edits.
 ## 7. Terminal UI
 
 Match Joey's house style: chocolate-orange accent, green OK, red fail, amber
-warn (same palette as keytest). Nerd Font glyphs with ASCII fallback.
+warn (same palette as the trial engine). Nerd Font glyphs with ASCII fallback.
 
 ### Voice & feel — the hard rule
 
@@ -261,7 +260,7 @@ This is a first-class requirement, not polish.
   get a quiet green check, not a parade.
 - **One idea per line.** Short lines, generous spacing, no wall-of-text dumps.
 
-A verbose `--log` / `chatterguard.log`-style file can still exist for the curious
+A verbose `--log` / diagnostic log file can still exist for the curious
 — but the *interface* never makes you read a log to understand what's wrong.
 
 ### Screens (mockups — design target, not final art)
@@ -341,7 +340,7 @@ the work; the parenthetical names are the fallback for no-color terminals.)
 keysurgeon/
   keysurgeon.py        # CLI entry, arg parsing, mode dispatch
   hook.py              # shared WH_KEYBOARD_LL hook + event pump (lifted from
-                       #   keytest/chatterguard — single source of truth)
+                       #   trial/filter modules — single source of truth)
   trials.py            # diagnostic primitives (§3), each returns a verdict
   faults.py            # taxonomy table (§2) — data
   fixes.py             # recommendation ladders (§6) — data
@@ -352,7 +351,7 @@ keysurgeon/
 ```
 
 **Reuse, don't fork:** the low-level ctypes hook is currently duplicated across
-keytest and chatterguard. KeySurgeon's `hook.py` becomes the canonical version;
+earlier trial/filter prototypes. KeySurgeon's `hook.py` becomes the canonical version;
 later we can point the old two at it (optional cleanup, not required).
 
 **Device identity:** use `GetRawInputDeviceInfo` to get the device handle/name
@@ -376,9 +375,9 @@ to a manual "which keyboard is this?" prompt if raw-input device id is fiddly.)
 | **M7** | launcher + README + registry + maintainer notes | 🔜 launcher+README done |
 | ~~Mx~~ | ~~latency / NKRO / scancode audit~~ | **cut from v1** — see §3b |
 
-Remaining for v1 polish: register in PROJECT_REGISTRY, optional PS alias,
+Remaining for v1 polish: maintainer install registration, optional PS alias,
 hand-test on a real chattering key. Deferred: detached background `watch`
-(pythonw + pid like chatterguard), per-model PID database, scancode/NKRO checks.
+(pythonw + pid file), per-model PID database, scancode/NKRO checks.
 Anything that can't be measured honestly stays cut, not faked.
 
 ---
@@ -396,12 +395,12 @@ Anything that can't be measured honestly stays cut, not faked.
   for hot-swap/soldered (not VID-knowable). Verified live: detects Razer (1532).
 
 - ✅ **Detached `watch`** — built (`watch.py`): `--bg` / `--status` / `--stop`,
-  pythonw+pid, live state file + periodic profile save. Mirrors chatterguard.
+  pythonw+pid, live state file + periodic profile save. Mirrors the detached-watch pattern.
 
 **Still open:**
-1. **chatterguard**: fold its live-filter into KeySurgeon as the "apply fix
+1. **Live filter**: fold the debounce filter into KeySurgeon as the "apply fix
    rung 0" action, or keep it standalone and just point at it?
-   *(currently: points at it - the filter rung names chatterguard.)*
+   *(currently: the filter rung is still external.)*
 2. **Audience**: just your boards, or built to hand to other people?
 3. **Per-model PID database**: map specific PIDs → exact model + hot-swap flag so
    it can stop asking even for hot-swap/soldered (needs a curated DB).
@@ -413,12 +412,12 @@ Anything that can't be measured honestly stays cut, not faked.
 ## 11. Known pitfalls (from FAILINGS.md)
 
 - **Don't block the shell** with any long-running watch/monitor mode — passive
-  monitor must run detached (pythonw + pid file, like chatterguard), never
+  monitor must run detached (pythonw + pid file), never
   inline in a terminal.
 - **Never kill by process name** — if a monitor needs stopping, use the pid file
-  + verified PID (chatterguard's `--stop` pattern is correct, reuse it).
-- **No nested quote-escaping** across launchers — AIDIR paths are space-free,
-  pass args bare.
+  + verified PID (the `--stop` pattern is correct, reuse it).
+- **No nested quote-escaping** across launchers - prefer repository-relative
+  paths and pass args as argument arrays instead of quote-built strings.
 - **Keep a `--plain`/`--ai` path** — never force ANSI into a pipe.
 - ctypes 64-bit: keep the explicit `argtypes`/`restype` prototypes (both
   existing tools have them — pointers get truncated without).

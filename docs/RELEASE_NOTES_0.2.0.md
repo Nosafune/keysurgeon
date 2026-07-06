@@ -88,7 +88,7 @@ Highlights:
 - `selftest`, `doctor`, public-tree verifier, and reproducible workflow/Rich/app
   launch assets, plus a headless Textual app smoke.
 - Launch-readiness board and hardened manual-smoke gate for honest pre-publish
-  handoff.
+  review.
 
 Known limits:
 - Windows only.

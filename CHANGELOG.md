@@ -21,7 +21,7 @@
 - Add starter-issue and proof-matrix docs for public intake and release-truth
   review.
 - Add a no-mutation `launch-readiness.ps1` board that summarizes existing
-  proof and pre-publish audit data for local launch handoff.
+  proof and pre-publish audit data for release review.
 - Add a read-only `post-publish-audit.ps1` gate for GitHub metadata, labels,
   starter issues, remote workflows, Pages URL, and release asset visibility.
 - Harden the manual smoke result recorder so `hardware-smoke-pass` rejects blank

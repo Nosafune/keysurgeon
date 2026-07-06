@@ -136,7 +136,7 @@ repair path before replacement.
 - The landing page has Open Graph, Twitter card, and JSON-LD metadata with
   repository, issue tracker, platform, and screenshot fields, but no canonical
   public URL or `og:url` should be added until Pages resolves.
-- Use `.\scripts\release-packet.ps1` to create a local dry-run handoff folder
+- Use `.\scripts\release-packet.ps1` to create a local dry-run review folder
   with the current audit JSON, commit plan, GitHub setup plan, starter issue
   plan, proof JSON, launch-readiness board, post-publish audit JSON, asset
   proof, and launch copy. The packet is not publish proof; it preserves the

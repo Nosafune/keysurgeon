@@ -36,7 +36,7 @@ Read-only post-publish visibility audit:
 .\scripts\post-publish-audit.ps1 -Json
 ```
 
-Local release handoff packet:
+Local release review packet:
 
 ```powershell
 .\scripts\release-packet.ps1
@@ -50,7 +50,7 @@ keysurgeon ready
 .\scripts\launch-readiness.ps1 -AsMarkdown
 ```
 
-Distribution mirror parity, if the adjacent mirror is the public handoff tree:
+Public release copy check, if you maintain a separate public release copy:
 
 ```powershell
 .\scripts\verify-dist-parity.ps1
@@ -184,16 +184,16 @@ Before publishing:
 - Run `.\scripts\pre-publish-audit.ps1`. It must either print
   `KEYSURGEON_PRE_PUBLISH_READY` or list the exact remote/local gates still
   blocking publish. Use `.\scripts\pre-publish-audit.ps1 -Json` for structured
-  release-packet or CI handoff evidence.
+  release-packet or CI evidence.
 - Confirm the v2 release files are committed; `pre-publish-audit.ps1` blocks on
   `release files committed` while local tracked or untracked release files
   remain under KeySurgeon.
 - Run `.\scripts\release-commit-plan.ps1` before any commit. It is dry-run only,
   prints the scoped candidate files, fails if generated artifacts are present,
-  and reports whether the adjacent distribution mirror has parity. The source
-  commit command does not include the mirror; publish or copy that tree only
+  and reports whether the separate public release copy is in sync. The source
+  commit command does not include that copy; publish or copy it only
   after explicit approval.
-- Run `.\scripts\release-packet.ps1` when a reviewer, agent handoff, or launch
+- Run `.\scripts\release-packet.ps1` when a reviewer or launch
   prep pass needs one local folder containing audit JSON, the dry-run commit
   plan, the GitHub setup plan, proof JSON, the launch-readiness board,
   post-publish audit JSON, asset proof, and launch copy.

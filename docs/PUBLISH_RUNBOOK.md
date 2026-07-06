@@ -38,7 +38,7 @@ gate, blocked remote gates, and the manual hardware-smoke gate unless
 `docs\MANUAL_SMOKE_RESULT.md` records `hardware-smoke-pass`. After commit,
 publish, and real-keyboard smoke, it should move toward
 `KEYSURGEON_PRE_PUBLISH_READY`. Use `-Json` when a CI job, release packet, or
-agent handoff needs structured `status`, `repo`, `checks`, and `failures`
+review tool needs structured `status`, `repo`, `checks`, and `failures`
 without parsing the human output.
 
 To see the exact release files that would be committed, run the dry-run commit
@@ -49,12 +49,11 @@ plan. It prints candidate files and refuses generated artifacts; it does not run
 .\scripts\release-commit-plan.ps1
 ```
 
-The commit plan is source-scoped. It also reports distribution-mirror parity
-when the adjacent mirror exists, but it does not include that mirror in the
-printed source commit command. Publish or copy the mirror only after explicit
-approval.
+The commit plan is source-scoped. It also reports whether a separate public
+release copy is in sync, but it does not include that copy in the printed
+source commit command. Publish or copy it only after explicit approval.
 
-To build a local handoff packet for review or launch preparation without
+To build a local review packet for launch preparation without
 touching git or GitHub, run:
 
 ```powershell
@@ -92,7 +91,7 @@ issues, latest selftest and Pages workflow results, GitHub Pages URL, final
 asset. It does not mutate GitHub and does not replace the executable smoke
 commands below.
 
-If the adjacent distribution mirror is being used as the public handoff tree,
+If you maintain a separate public release copy,
 verify that it still matches the source tree before review:
 
 ```powershell
