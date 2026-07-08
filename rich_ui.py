@@ -89,9 +89,6 @@ def tour(payload):
     for label, item in (
         ("Rich/Textual", proof["rich_textual_stack"]),
         ("Public assets", proof["demo_assets"]),
-        ("Package metadata", proof["package_metadata"]),
-        ("Package gate", proof["package_build_gate"]),
-        ("Release package", proof["release_package"]),
         ("Hardware smoke", proof["manual_keyboard_smoke"]),
     ):
         status = item["status"]
@@ -284,10 +281,7 @@ def proof_report(payload):
         ("Rich/Textual demos", proof["demo_assets"]),
         ("Manual keyboard smoke", proof["manual_keyboard_smoke"]),
         ("Stack proof", proof["rich_textual_stack"]),
-        ("Package metadata", proof["package_metadata"]),
-        ("Package build gate", proof["package_build_gate"]),
         ("Claim matrix", proof["proof_matrix"]),
-        ("Release package", proof["release_package"]),
     ):
         status = item["status"]
         gates.add_row(label, f"[{_proof_style(status)}]{status}[/]", item["detail"])
@@ -344,79 +338,13 @@ def proof_report(payload):
             padding=(1, 2),
         ))
 
-    blocker_text = "\n".join(f"[ks.probe]{brand.ASCII_ICONS['watch']}[/] {item}"
-                             for item in payload["public_blockers"])
-    console.print(Panel(
-        blocker_text,
-        title=" not proved yet ",
-        border_style="ks.probe",
-        box=box.ROUNDED,
-        padding=(1, 2),
-    ))
-
-    actions = payload.get("next_actions") or []
-    if actions:
-        table = Table(box=box.SIMPLE, show_header=True, header_style="ks.signal")
-        table.add_column("Next", no_wrap=True)
-        table.add_column("Command")
-        table.add_column("Remote", no_wrap=True)
-        for item in actions:
-            remote = "no" if not item.get("changes_remote") else "yes"
-            table.add_row(item["label"], f"[bold]{item['command']}[/]", remote)
-        console.print(Panel(
-            table,
-            title=" next release moves ",
-            border_style="ks.repair",
-            box=box.ROUNDED,
-            padding=(1, 2),
-        ))
-
-
-def ready_report(payload):
-    banner("launch readiness")
-    summary = payload.get("proof_summary") or {}
-    grid = Table.grid(padding=(0, 2))
-    grid.add_column(style="bold ks.signal")
-    grid.add_column(style="ks.muted")
-    grid.add_row(
-        "Local proof",
-        f"{summary.get('local', 0)} local / {summary.get('command_gated', 0)} command-gated / {summary.get('blocked', 0)} blocked",
-    )
-    grid.add_row("Mode", "local summary only; no git, GitHub, release, Pages, or deploy changes")
-    console.print(Panel(
-        grid,
-        title=" no-mutation launch board ",
-        border_style="ks.signal",
-        box=box.ROUNDED,
-        padding=(1, 2),
-    ))
-
-    actions = payload.get("next_actions") or []
-    if actions:
-        table = Table(box=box.SIMPLE_HEAVY, show_header=True, header_style="ks.signal")
-        table.add_column("Next")
-        table.add_column("Command")
-        table.add_column("Scope", no_wrap=True)
-        for item in actions:
-            table.add_row(
-                item["label"],
-                f"[bold]{item['command']}[/]",
-                "remote" if item.get("changes_remote") else "[ks.repair]local[/]",
-            )
-        console.print(Panel(
-            table,
-            title=" next safe actions ",
-            border_style="ks.repair",
-            box=box.ROUNDED,
-            padding=(1, 2),
-        ))
-
     blockers = payload.get("public_blockers") or []
     if blockers:
-        text = "\n".join(f"[ks.probe]{brand.ASCII_ICONS['watch']}[/] {item}" for item in blockers)
+        blocker_text = "\n".join(f"[ks.probe]{brand.ASCII_ICONS['watch']}[/] {item}"
+                                 for item in blockers)
         console.print(Panel(
-            text,
-            title=" still blocked ",
+            blocker_text,
+            title=" not proved yet ",
             border_style="ks.probe",
             box=box.ROUNDED,
             padding=(1, 2),

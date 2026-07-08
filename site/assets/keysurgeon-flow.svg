@@ -88,14 +88,14 @@
 <rect x="623" y="388" width="548" height="220" rx="18" fill="#111820" stroke="#f5b83d" stroke-width="2"/>
 <rect x="641" y="406" width="52" height="28" rx="14" fill="#f5b83d" opacity="0.18"/>
 <text x="658" y="426" class="tag" fill="#f5b83d">04</text>
-<text x="711" y="428" class="frame-title">Check readiness</text>
+<text x="711" y="428" class="frame-title">Check the proof</text>
 <rect x="647" y="450" width="500" height="36" rx="10" fill="#081116" stroke="#1f3440"/>
-<text x="667" y="474" class="mono command">$ keysurgeon ready</text>
-<text x="667" y="514" class="mono label" fill="#f5b83d">   local</text>
-<text x="755" y="514" class="mono body">8 local / 1 command-gated / 6 blocked</text>
-<text x="667" y="544" class="mono label" fill="#f5b83d">    next</text>
-<text x="755" y="544" class="mono body">build packet, review commit plan, smoke hardware</text>
-<text x="667" y="574" class="mono label" fill="#f5b83d">   proof</text>
-<text x="755" y="574" class="mono body">use keysurgeon proof --json for machine evidence</text>
+<text x="667" y="474" class="mono command">$ keysurgeon proof --json</text>
+<text x="667" y="514" class="mono label" fill="#f5b83d">  assets</text>
+<text x="755" y="514" class="mono body">demo provenance hashes verified</text>
+<text x="667" y="544" class="mono label" fill="#f5b83d"> privacy</text>
+<text x="755" y="544" class="mono body">no typed text stored or exported</text>
+<text x="667" y="574" class="mono label" fill="#f5b83d"> blocked</text>
+<text x="755" y="574" class="mono body">hardware smoke not recorded yet</text>
 </g>
 </svg>

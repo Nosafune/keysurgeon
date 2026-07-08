@@ -80,7 +80,7 @@ foreach ($shot in $shots) {
 }
 
 $html = Get-Content -LiteralPath $site -Raw
-foreach ($needle in @("See install steps", "Windows", "MIT", "local JSON", "Rich + Textual", "See the signal", "--plain fallback", "Sample diagnosis copy", "keysurgeon ready", "keysurgeon proof --json", "assets/keysurgeon-flow.svg", "workflow, Rich, and Textual proof", "Install from the checkout today", "python -m pip install .", "post-publish path")) {
+foreach ($needle in @("See install steps", "Windows", "MIT", "local JSON", "Rich + Textual", "See the signal", "--plain fallback", "Sample diagnosis copy", "keysurgeon proof --json", "assets/keysurgeon-flow.svg", "python -m pip install .")) {
     if ($html -notlike "*$needle*") {
         throw "Missing landing copy: $needle"
     }

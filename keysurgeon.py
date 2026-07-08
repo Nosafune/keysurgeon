@@ -14,7 +14,6 @@ Or jump straight to a mode:
     python keysurgeon.py report          # last results + board health
     python keysurgeon.py issue           # redacted GitHub issue packet
     python keysurgeon.py export          # redacted issue/repair report
-    python keysurgeon.py ready           # concise launch readiness board
     python keysurgeon.py proof           # full local proof/readiness report
     python keysurgeon.py site           # local landing/demo page
     python keysurgeon.py smoke          # manual hardware-smoke report scaffold
@@ -64,7 +63,6 @@ Usage:
   keysurgeon issue [--out FILE]      redacted GitHub issue packet
   keysurgeon export [--json] [--out FILE]
                                     redacted report for GitHub issues
-  keysurgeon ready                       concise launch readiness board
   keysurgeon proof [--json]             full local proof/readiness report
   keysurgeon site [--open]              local landing/demo page path
   keysurgeon smoke [--out FILE]         manual hardware-smoke report scaffold
@@ -298,12 +296,6 @@ def mode_tour():
     return 0
 
 
-def mode_ready():
-    import proof_report
-    proof_report.print_ready(proof_report.build_payload())
-    return 0
-
-
 def mode_export(keyboard, args=None):
     args = args or []
     fmt = "md"
@@ -505,8 +497,6 @@ def _dispatch(mode, args, opts):
         raise SystemExit(app_textual.run_app(kb))
     elif mode == "tour":
         return mode_tour()
-    elif mode == "ready":
-        return mode_ready()
     elif mode == "triage":
         mode_triage(n, kb)
         return 0

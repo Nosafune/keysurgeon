@@ -1,10 +1,8 @@
 # First Issues
 
-Use these starter issues after the public repository exists. They are scoped to
-work KeySurgeon can already verify locally, and they avoid unsupported claims
-about latency certification, remapping, macros, or broad hardware proof.
-
-For copy/paste issue bodies, use `docs/STARTER_ISSUE_TEMPLATES.md`.
+Scoped starter contributions — work KeySurgeon can already verify locally.
+They avoid unsupported claims about latency certification, remapping, macros,
+or broad hardware proof.
 
 Apply `good first issue` to small tasks with a clear done state. Apply
 `help wanted` when outside board facts, install evidence, repair wording, tests,
@@ -71,9 +69,8 @@ Good evidence:
 Done when:
 
 - `README.md` or `docs/DIAGNOSIS_GUIDE.md` gives a clearer fix path.
-- The note preserves the current local-checkout install flow until GitHub is
-  actually published.
-- `.\scripts\verify-public-tree.ps1` passes.
+- Both the pip-from-GitHub and local-checkout install flows still work.
+- `python keysurgeon.py selftest` passes.
 
 ## Test Coverage
 

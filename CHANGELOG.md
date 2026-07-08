@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.2.1 - 2026-07-08
+
+- Fix a crash in the launch-readiness renderer: `"bold ks.signal"` is not a
+  valid Rich style, so any command that rendered that panel raised
+  `MissingStyle`.
+- Remove the `keysurgeon ready` command and the release-process machinery
+  (`launch-readiness`, `pre/post-publish audits`, `release packet/commit plan`,
+  GitHub setup planning) from the CLI, Textual app, and scripts. `keysurgeon
+  proof` now reports local diagnostic proof only: demo asset provenance,
+  privacy, the claim matrix, and hardware-smoke status.
+- Rewrite `scripts/verify-public-tree.ps1` as a small behavior check (selftest,
+  no internal agent files, public assets present, proof manifest) that fails CI
+  on a real failure instead of asserting doc phrasing.
+- Trim README and public docs; remove internal release-process docs from the
+  public tree.
+
 ## 0.2.0 - 2026-06-30
 
 - Add Forensic Signal brand tokens.

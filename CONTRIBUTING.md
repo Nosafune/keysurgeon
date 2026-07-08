@@ -11,9 +11,7 @@ without inventing unsupported capabilities.
 - Add self-test coverage for faults, scoring, storage, or board detection.
 - Improve Windows install notes or troubleshooting docs.
 
-Use `docs/FIRST_ISSUES.md` for starter issue scope and
-`docs/STARTER_ISSUE_TEMPLATES.md` for ready-to-post issue bodies before opening
-public intake.
+See `docs/FIRST_ISSUES.md` for scoped starter ideas.
 
 ## Before Opening A Pull Request
 

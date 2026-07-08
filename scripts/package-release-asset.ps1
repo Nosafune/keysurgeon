@@ -2,12 +2,12 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 $root = Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")
-$version = "0.2.0"
+$version = "0.2.1"
 $releaseDir = Join-Path $root "dist\release"
 $assetName = "keysurgeon-v$version-windows-x64.exe"
 $assetPath = Join-Path $releaseDir $assetName
-$notesSource = Join-Path $root "docs\RELEASE_NOTES_0.2.0.md"
-$notesTarget = Join-Path $releaseDir "RELEASE_NOTES_0.2.0.md"
+$notesSource = Join-Path $root "docs\RELEASE_NOTES_0.2.1.md"
+$notesTarget = Join-Path $releaseDir "RELEASE_NOTES_0.2.1.md"
 $proofSource = Join-Path $root "site\assets\keysurgeon-proof.json"
 $checksumsPath = Join-Path $releaseDir "SHA256SUMS.txt"
 $manifestPath = Join-Path $releaseDir "release-manifest.json"
@@ -90,7 +90,7 @@ try {
             "$assetName proof --json",
             "$assetName selftest"
         )
-        notes = "RELEASE_NOTES_0.2.0.md"
+        notes = "RELEASE_NOTES_0.2.1.md"
     }
     $manifest | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $manifestPath -Encoding utf8
 

@@ -5,7 +5,7 @@ Forensic Signal: a keyboard diagnostic instrument, not a generic terminal app.
 """
 
 NAME = "KeySurgeon"
-VERSION = "0.2.0"
+VERSION = "0.2.1"
 TAGLINE = "Catch keyboard chatter before you replace the board."
 SIGNAL_MARK = "[K]--||--"
 CLEAN_MARK = "[K]--|---"

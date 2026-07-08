@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "keysurgeon"
-version = "0.2.0"
+version = "0.2.1"
 description = "Keyboard chatter diagnostic for Windows, double-typing, dead keys, and repair-first faults"
 readme = "README.md"
 requires-python = ">=3.10"

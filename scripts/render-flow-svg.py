@@ -48,13 +48,13 @@ FRAMES = [
     },
     {
         "tag": "04",
-        "title": "Check readiness",
-        "command": "keysurgeon ready",
+        "title": "Check the proof",
+        "command": "keysurgeon proof --json",
         "accent": "#f5b83d",
         "lines": [
-            ("local", "8 local / 1 command-gated / 6 blocked"),
-            ("next", "build packet, review commit plan, smoke hardware"),
-            ("proof", "use keysurgeon proof --json for machine evidence"),
+            ("assets", "demo provenance hashes verified"),
+            ("privacy", "no typed text stored or exported"),
+            ("blocked", "hardware smoke not recorded yet"),
         ],
     },
 ]

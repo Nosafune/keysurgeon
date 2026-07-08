@@ -89,7 +89,7 @@ The check is read-only. It rejects blank result cells, the install-source
 placeholder, missing keyboard identity, and missing `hardware-smoke-pass` claim.
 
 After the real-keyboard run is complete, update `docs/MANUAL_SMOKE_RESULT.md`.
-The pre-publish audit will block broad release claims until that file records
+Broad real-hardware claims stay off the table until that file records
 `hardware-smoke-pass`.
 
 Use the recorder so the gate file stays in the expected format:

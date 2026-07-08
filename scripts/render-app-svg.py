@@ -53,52 +53,14 @@ def main():
                 "status": "ok",
                 "detail": "Rich/Textual demos and bitmap captures are hash-verified; Textual runtime smoke is gated by scripts/verify-textual-app.py",
             },
-            "package_build_gate": {
-                "status": "command-gated",
-                "detail": "wheel/package build proof is produced by scripts/release-check.ps1",
-                "command": "scripts/release-check.ps1",
-            },
-            "package_metadata": {
-                "status": "ok",
-                "detail": "pyproject search metadata includes 17 keywords and planned GitHub URLs",
-            },
             "proof_matrix": {
                 "status": "ok",
                 "detail": "docs/PROOF_MATRIX.md maps local-ready, command-gated, and blocked public claims",
             },
-            "release_package": {
-                "status": "blocked",
-                "detail": "local release package proof is not built",
-            },
         },
-        "proof_summary": {"local": 8, "command_gated": 1, "blocked": 6},
+        "proof_summary": {"local": 8, "command_gated": 1, "blocked": 1},
         "public_blockers": [
             "manual keyboard smoke must record hardware-smoke-pass before broad hardware claims",
-            "post-publish-audit.ps1 must report KEYSURGEON_POST_PUBLISH_READY after final v0.2.0 release proof",
-            "GitHub repository, remote selftest workflow, Pages workflow, final v0.2.0 release, and release proof must exist before publish claims",
-            "release files must be committed before any public push or tag",
-        ],
-        "next_actions": [
-            {
-                "label": "Build local release packet",
-                "command": ".\\scripts\\release-packet.ps1",
-                "changes_remote": False,
-            },
-            {
-                "label": "Review scoped commit plan",
-                "command": ".\\scripts\\release-commit-plan.ps1",
-                "changes_remote": False,
-            },
-            {
-                "label": "Verify live post-publish surface",
-                "command": ".\\scripts\\post-publish-audit.ps1 -Json",
-                "changes_remote": False,
-            },
-            {
-                "label": "Record real keyboard smoke",
-                "command": ".\\scripts\\record-manual-smoke-result.ps1 -Result hardware-smoke-pass",
-                "changes_remote": False,
-            },
         ],
     }
 

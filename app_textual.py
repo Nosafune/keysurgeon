@@ -16,7 +16,6 @@ APP_ACTIONS = [
     {"key": "r", "binding": "refresh", "label": "refresh", "command": "keysurgeon app", "safe": True},
     {"key": "b", "binding": "show_command('keysurgeon board')", "label": "board", "command": "keysurgeon board", "safe": True},
     {"key": "i", "binding": "show_command('keysurgeon issue')", "label": "issue packet", "command": "keysurgeon issue", "safe": True},
-    {"key": "y", "binding": "show_command('keysurgeon ready')", "label": "ready", "command": "keysurgeon ready", "safe": True},
     {"key": "p", "binding": "show_command('keysurgeon proof --json')", "label": "proof", "command": "keysurgeon proof --json", "safe": True},
     {"key": "s", "binding": "show_command('keysurgeon site --open')", "label": "local site", "command": "keysurgeon site --open", "safe": True},
     {"key": "q", "binding": "quit", "label": "quit", "command": "quit app", "safe": True},
@@ -147,7 +146,6 @@ def _command_center(snapshot):
             f"[red]{worst}[/] is bouncing in watch mode.",
             f"next: keysurgeon fix {worst}",
             "then: keysurgeon test " + worst,
-            "ready: keysurgeon ready",
             "proof: keysurgeon proof --json",
         ])
     elif bad:
@@ -156,7 +154,6 @@ def _command_center(snapshot):
             f"[yellow]{worst['label']}[/] is the weakest saved key.",
             f"next: keysurgeon fix {worst['label']}",
             "then: keysurgeon report",
-            "ready: keysurgeon ready",
             "proof: keysurgeon proof --json",
         ])
     elif running:
@@ -164,7 +161,6 @@ def _command_center(snapshot):
             "[green]watch is armed[/]; type normally.",
             "press w here to stop and flush.",
             "next: keysurgeon report",
-            "ready: keysurgeon ready",
             "proof: keysurgeon proof --json",
         ])
     else:
@@ -172,7 +168,6 @@ def _command_center(snapshot):
             "no active evidence yet.",
             "press w to arm background watch.",
             "or run: keysurgeon sweep",
-            "ready: keysurgeon ready",
             "proof: keysurgeon proof --json",
         ])
     return "\n".join(lines)
@@ -201,18 +196,6 @@ def _readiness_text(payload=None):
         f"{stack['detail']}"
     )
 
-    package_build = proof["package_build_gate"]
-    lines.append(
-        f"package: [{_status_color(package_build['status'])}]{package_build['status']}[/] "
-        f"{package_build['command']}"
-    )
-
-    package_metadata = proof.get("package_metadata") or {}
-    lines.append(
-        f"metadata: [{_status_color(package_metadata.get('status', 'missing'))}]{package_metadata.get('status', 'missing')}[/] "
-        f"{package_metadata.get('detail', 'pyproject.toml metadata not reported')}"
-    )
-
     matrix = proof.get("proof_matrix") or {}
     summary = payload.get("proof_summary") or {}
     lines.append(
@@ -220,27 +203,11 @@ def _readiness_text(payload=None):
         f"local {summary.get('local', 0)} / command {summary.get('command_gated', 0)} / blocked {summary.get('blocked', 0)}"
     )
 
-    release = proof["release_package"]
-    lines.append(
-        f"release: [{_status_color(release['status'])}]{release['status']}[/] "
-        f"{release['detail']}"
-    )
-
     blockers = payload.get("public_blockers") or []
     if blockers:
         lines.append("blocked:")
         for item in blockers[:2]:
             lines.append(f"  [yellow]-[/] {item}")
-    else:
-        lines.append("[green]no public blockers reported[/]")
-
-    actions = payload.get("next_actions") or []
-    if actions:
-        lines.append("next:")
-        for item in actions[:3]:
-            remote = "remote" if item.get("changes_remote") else "local"
-            lines.append(f"  [green]+[/] {remote}: {item['command']}")
-
     return "\n".join(lines)
 
 
@@ -372,7 +339,6 @@ def _commands():
         "keysurgeon test E\n"
         "keysurgeon watch --bg\n"
         "keysurgeon report\n"
-        "keysurgeon ready\n"
         "keysurgeon proof --json"
     )
 

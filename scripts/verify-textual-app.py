@@ -110,9 +110,9 @@ async def _run_smoke():
                 "#command": ("COMMAND CENTER", "keysurgeon fix E"),
                 "#device": ("DEVICE", "repair model:", "hotswap"),
                 "#readiness": ("READINESS", "hardware:", "blocked"),
-                "#actions": ("ACTION BAR", "issue packet", "ready", "No fake repair buttons"),
+                "#actions": ("ACTION BAR", "issue packet", "No fake repair buttons"),
                 "#issue": ("ISSUE PACKET", "keysurgeon issue", "no typed text is stored or exported"),
-                "#commands": ("KEYS", "CLI FLOW", "keysurgeon ready", "keysurgeon proof --json"),
+                "#commands": ("KEYS", "CLI FLOW", "keysurgeon proof --json"),
             }
             for selector, needles in required.items():
                 text = _rendered_text(app, selector)
@@ -123,10 +123,6 @@ async def _run_smoke():
             await pilot.press("p")
             await pilot.pause()
             assert "keysurgeon proof --json" in _rendered_text(app, "#message")
-
-            await pilot.press("y")
-            await pilot.pause()
-            assert "keysurgeon ready" in _rendered_text(app, "#message")
 
             await pilot.press("i")
             await pilot.pause()

@@ -76,8 +76,8 @@
     },
     {
       "path": "site/assets/keysurgeon-flow.svg",
-      "bytes": 6892,
-      "sha256": "15c2036d1e252f4713825e8feda8ca30555146c09462ef51df9347a62be730c0",
+      "bytes": 6860,
+      "sha256": "5bc2ad53444eab7145f1a1e5e23762f3b984429f86ae31a8f0660b3b6787597a",
       "kind": "workflow-motion-demo",
       "generator": "scripts/render-flow-svg.py",
       "source_modules": [

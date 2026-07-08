@@ -89,9 +89,8 @@ MENU_ITEMS = [
     ("4", "test", "Test", "test specific keys right now"),
     ("5", "report", "Report", "latest board health and trend"),
     ("6", "fix", "Fix", "show the repair ladder for one key"),
-    ("7", "ready", "Ready", "launch readiness board"),
-    ("8", "proof", "Proof", "full local proof and blockers"),
-    ("9", "app", "App", "open the optional Textual command center"),
+    ("7", "proof", "Proof", "full local proof and blockers"),
+    ("8", "app", "App", "open the optional Textual command center"),
     ("d", "doctor", "Doctor", "check install and support facts"),
 ]
 
@@ -132,9 +131,6 @@ def tour(payload):
     gates = [
         ("Rich/Textual", proof["rich_textual_stack"]),
         ("Public assets", proof["demo_assets"]),
-        ("Package metadata", proof["package_metadata"]),
-        ("Package gate", proof["package_build_gate"]),
-        ("Release package", proof["release_package"]),
         ("Hardware smoke", proof["manual_keyboard_smoke"]),
     ]
     print("  " + c(
@@ -277,10 +273,7 @@ def proof_report(payload):
         ("Rich/Textual demos", proof["demo_assets"]),
         ("Manual keyboard smoke", proof["manual_keyboard_smoke"]),
         ("Stack proof", proof["rich_textual_stack"]),
-        ("Package metadata", proof["package_metadata"]),
-        ("Package build gate", proof["package_build_gate"]),
         ("Claim matrix", proof["proof_matrix"]),
-        ("Release package", proof["release_package"]),
     ]
     for label, item in rows:
         status = item["status"]
@@ -312,36 +305,10 @@ def proof_report(payload):
             print("    " + c(f"{status:<6}", _proof_status_style(status), "BLD")
                   + f" {item['kind']:<28} {item['path']} ({item['bytes']} bytes)")
 
-    print()
-    print("  " + c("Not proved yet:", "WRN", "BLD"))
-    for blocker in payload["public_blockers"]:
-        print("    " + c("- ", "WRN") + blocker)
-    print()
-
-
-def ready_report(payload):
-    if USE_RICH:
-        return rich_ui.ready_report(payload)
-    banner("launch readiness")
-    summary = payload.get("proof_summary") or {}
-    print("  " + c(
-        f"Local proof: {summary.get('local', 0)} local / "
-        f"{summary.get('command_gated', 0)} command-gated / "
-        f"{summary.get('blocked', 0)} blocked",
-        "BLD",
-        "ACC",
-    ))
-    print("  " + c("Mode: local summary only; no git, GitHub, release, Pages, or deploy changes.", "DIM"))
-    print()
-    print("  " + c("Next safe actions:", "BLD"))
-    for item in payload.get("next_actions") or []:
-        remote = "remote" if item.get("changes_remote") else "local"
-        print("    " + c(item["label"], "ACC", "BLD") + c(f"  ({remote})", "DIM"))
-        print("      " + item["command"])
     blockers = payload.get("public_blockers") or []
     if blockers:
         print()
-        print("  " + c("Still blocked:", "WRN", "BLD"))
+        print("  " + c("Not proved yet:", "WRN", "BLD"))
         for blocker in blockers:
             print("    " + c("- ", "WRN") + blocker)
     print()
