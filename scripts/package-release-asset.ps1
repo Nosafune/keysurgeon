@@ -80,7 +80,6 @@ try {
             demo_assets = $proofSnapshot.local_proof.demo_assets.status
             manual_keyboard_smoke = $proofSnapshot.local_proof.manual_keyboard_smoke.status
             rich_textual_stack = $proofSnapshot.local_proof.rich_textual_stack.status
-            package_build_gate = $proofSnapshot.local_proof.package_build_gate.status
             public_blockers = $proofSnapshot.public_blockers
         }
         smoke = @(
@@ -100,9 +99,6 @@ try {
     }
     if ($manifestCheck.proof_snapshot.demo_assets -ne "ok") {
         throw "Release manifest proof snapshot does not record ok demo assets."
-    }
-    if ($manifestCheck.proof_snapshot.package_build_gate -ne "command-gated") {
-        throw "Release manifest proof snapshot does not record command-gated package build."
     }
     if ($manifestCheck.proof_snapshot.manual_keyboard_smoke -eq "ok") {
         throw "Release manifest unexpectedly claims manual keyboard smoke is ok."
